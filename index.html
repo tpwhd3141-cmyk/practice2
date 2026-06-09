@@ -142,11 +142,11 @@ if (offlineSeconds > 10) {
 function getGPS() {
   const base = 1 + state.level * 0.5;
   const goldBoost = 1 + (state.upgrades.gold_boost || 0) * 0.2;
-  return parseFloat((base * state.multiplier * goldBoost).toFixed(1));
+  return parseFloat((base * state.multiplier * goldBoost * 10).toFixed(1));
 }
 
 function getEnhanceCost() {
-  return Math.floor(10 * Math.pow(1.4, state.level) * (1 / state.multiplier));
+  return Math.floor(10 * Math.pow(1.4, state.level) * (1 / state.multiplier) / 10);
 }
 
 function getStoneCost() { return Math.max(1, Math.floor(state.level / 10)); }
