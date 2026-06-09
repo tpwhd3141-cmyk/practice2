@@ -1,0 +1,347 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.game { padding: 16px; max-width: 680px; }
+.top-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; text-align: center; }
+.stat-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.stat-value { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+.main-area { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.sword-panel { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.sword-display { font-size: 72px; text-align: center; transition: transform 0.1s; line-height: 1; }
+.sword-display.shake { animation: shake 0.3s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.sword-display.success { animation: pulse 0.3s; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+.enhance-level { font-size: 28px; font-weight: 500; color: var(--color-text-primary); }
+.enhance-name { font-size: 13px; color: var(--color-text-secondary); }
+.progress-bar { width: 100%; height: 6px; background: var(--color-background-secondary); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s; background: #7F77DD; }
+.btn-enhance { width: 100%; padding: 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); font-size: 14px; cursor: pointer; transition: background 0.15s; }
+.btn-enhance:hover { background: var(--color-background-secondary); }
+.btn-enhance.active { background: #7F77DD; color: #fff; border-color: #7F77DD; }
+.btn-prestige { width: 100%; padding: 10px; border-radius: var(--border-radius-md); border: 0.5px solid #EF9F27; background: transparent; color: #BA7517; font-size: 13px; cursor: pointer; transition: background 0.15s; }
+.btn-prestige:hover:not(:disabled) { background: #FAEEDA; }
+.btn-prestige:disabled { opacity: 0.35; cursor: not-allowed; }
+.fail-text { font-size: 12px; color: var(--color-text-secondary); }
+.right-panel { display: flex; flex-direction: column; gap: 8px; }
+.battle-log { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 12px; flex: 1; overflow: hidden; }
+.log-title { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
+.log-entries { display: flex; flex-direction: column; gap: 4px; max-height: 140px; overflow: hidden; }
+.log-entry { font-size: 12px; color: var(--color-text-secondary); animation: fadeIn 0.3s; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+.log-entry.good { color: #1D9E75; }
+.log-entry.great { color: #7F77DD; }
+.log-entry.fail { color: #E24B4A; }
+.upgrades { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 12px; }
+.upgrades-title { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
+.upgrade-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.upgrade-item:last-child { border-bottom: none; }
+.upgrade-name { font-size: 13px; color: var(--color-text-primary); }
+.upgrade-info { font-size: 11px; color: var(--color-text-secondary); }
+.btn-buy { padding: 4px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); font-size: 12px; cursor: pointer; white-space: nowrap; }
+.btn-buy:hover:not(:disabled) { background: var(--color-background-secondary); }
+.btn-buy:disabled { opacity: 0.35; cursor: not-allowed; }
+.prestige-info { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 12px; font-size: 12px; color: var(--color-text-secondary); text-align: center; }
+.flash-overlay { position: absolute; inset: 0; pointer-events: none; border-radius: var(--border-radius-lg); opacity: 0; transition: opacity 0.2s; }
+.sword-panel { position: relative; }
+</style>
+
+<h2 class="sr-only">검 강화 방치형 게임 — 검을 강화하고 몬스터를 처치해 골드와 강화석을 모으세요</h2>
+<div class="game">
+  <div class="top-bar">
+    <div class="stat-card">
+      <div class="stat-label">골드</div>
+      <div class="stat-value" id="gold-display">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">초당 골드</div>
+      <div class="stat-value" id="gps-display">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">강화석</div>
+      <div class="stat-value" id="stone-display">0</div>
+    </div>
+  </div>
+
+  <div class="main-area">
+    <div class="sword-panel" id="sword-panel">
+      <div class="sword-display" id="sword-emoji">🗡️</div>
+      <div class="enhance-level" id="enhance-level">+0</div>
+      <div class="enhance-name" id="enhance-name">낡은 단검</div>
+      <div style="width:100%">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:4px">
+          <span>다음 단계까지</span>
+          <span id="progress-text">0 / 10</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div style="width:100%;display:flex;flex-direction:column;gap:6px">
+        <button class="btn-enhance" id="btn-auto" onclick="toggleAuto()">자동 강화 켜기</button>
+        <button class="btn-enhance" id="btn-manual" onclick="manualEnhance()">강화하기 (골드 <span id="cost-display">10</span> + 강화석 <span id="stone-cost-display">1</span>)</button>
+      </div>
+      <div class="fail-text" id="fail-chance">실패 확률: 0%</div>
+      <button class="btn-prestige" id="btn-prestige" onclick="doPrestige()" disabled>전생하기 (+100 달성 시)</button>
+      <div class="prestige-info" id="prestige-info">전생 0회 | 배율 x1.0</div>
+    </div>
+
+    <div class="right-panel">
+      <div class="battle-log">
+        <div class="log-title">전투 로그</div>
+        <div class="log-entries" id="log-entries"></div>
+      </div>
+      <div class="upgrades">
+        <div class="upgrades-title">업그레이드</div>
+        <div id="upgrade-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SWORD_TIERS = [
+  { max: 10,  name: '낡은 단검',  emoji: '🗡️' },
+  { max: 25,  name: '철제 장검',  emoji: '⚔️' },
+  { max: 40,  name: '강철 대검',  emoji: '🔪' },
+  { max: 60,  name: '마법 검',    emoji: '✨' },
+  { max: 80,  name: '용암 검',    emoji: '🔥' },
+  { max: 99,  name: '천상의 검',  emoji: '💫' },
+  { max: 100, name: '전설의 검',  emoji: '⭐' },
+];
+
+const UPGRADES = [
+  { id: 'auto_stone', name: '자동 강화석 채굴', desc: '초당 0.5개 자동 획득', baseCost: 50, level: 0, maxLevel: 5, effect: () => {} },
+  { id: 'gold_boost', name: '전투력 강화', desc: '골드 획득 +20%', baseCost: 80, level: 0, maxLevel: 5, effect: () => {} },
+  { id: 'fail_reduce', name: '강화 안정화', desc: '실패 확률 -10%', baseCost: 120, level: 0, maxLevel: 3, effect: () => {} },
+];
+
+let state = {
+  gold: 10,
+  stone: 3,
+  level: 0,
+  prestige: 0,
+  multiplier: 1.0,
+  autoEnhance: false,
+  upgrades: { auto_stone: 0, gold_boost: 0, fail_reduce: 0 },
+  autoTimer: 0,
+  battleTimer: 0,
+};
+
+try {
+  const saved = localStorage.getItem('sword_idle_v1');
+  if (saved) state = { ...state, ...JSON.parse(saved) };
+} catch(e) {}
+
+const offlineSeconds = Math.min((Date.now() - (parseInt(localStorage.getItem('sword_idle_time') || Date.now()))) / 1000, 3600);
+if (offlineSeconds > 10) {
+  const offlineGold = Math.floor(getGPS() * offlineSeconds);
+  state.gold += offlineGold;
+  if (offlineGold > 0) addLog(`오프라인 보상: +${fmt(offlineGold)} 골드`, 'good');
+}
+
+function getGPS() {
+  const base = 1 + state.level * 0.5;
+  const goldBoost = 1 + (state.upgrades.gold_boost || 0) * 0.2;
+  return parseFloat((base * state.multiplier * goldBoost).toFixed(1));
+}
+
+function getEnhanceCost() {
+  return Math.floor(10 * Math.pow(1.4, state.level) * (1 / state.multiplier));
+}
+
+function getStoneCost() { return Math.max(1, Math.floor(state.level / 10)); }
+
+function getFailChance() {
+  if (state.level < 10) return 0;
+  const base = Math.min(80, (state.level - 10) * 2);
+  const reduce = (state.upgrades.fail_reduce || 0) * 10;
+  return Math.max(0, base - reduce);
+}
+
+function getSwordTier() {
+  for (const t of SWORD_TIERS) if (state.level <= t.max) return t;
+  return SWORD_TIERS[SWORD_TIERS.length - 1];
+}
+
+function fmt(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(1) + 'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return (n/1e3).toFixed(1) + 'K';
+  return Math.floor(n).toString();
+}
+
+function addLog(msg, cls='') {
+  const el = document.getElementById('log-entries');
+  const div = document.createElement('div');
+  div.className = 'log-entry' + (cls ? ' ' + cls : '');
+  div.textContent = msg;
+  el.insertBefore(div, el.firstChild);
+  while (el.children.length > 8) el.removeChild(el.lastChild);
+}
+
+const MONSTERS = ['슬라임','고블린','스켈레톤','오크','트롤','드래곤','마왕'];
+function getBattleMonster() {
+  const idx = Math.min(Math.floor(state.level / 15), MONSTERS.length - 1);
+  return MONSTERS[idx];
+}
+
+function manualEnhance() {
+  const cost = getEnhanceCost();
+  const sCost = getStoneCost();
+  if (state.gold < cost || state.stone < sCost) return;
+  state.gold -= cost;
+  state.stone -= sCost;
+  const fail = getFailChance();
+  const roll = Math.random() * 100;
+  if (roll < fail) {
+    state.level = Math.max(0, state.level - 1);
+    addLog(`강화 실패! +${state.level+1} → +${state.level} (-1)`, 'fail');
+    document.getElementById('sword-panel').classList.add('fail');
+    document.getElementById('sword-emoji').classList.add('shake');
+    setTimeout(() => document.getElementById('sword-emoji').classList.remove('shake'), 400);
+  } else {
+    state.level++;
+    const tier = getSwordTier();
+    addLog(`강화 성공! +${state.level} ${tier.name}`, state.level % 10 === 0 ? 'great' : 'good');
+    document.getElementById('sword-emoji').classList.add('success');
+    setTimeout(() => document.getElementById('sword-emoji').classList.remove('success'), 400);
+  }
+  render();
+  save();
+}
+
+function toggleAuto() {
+  state.autoEnhance = !state.autoEnhance;
+  render();
+}
+
+function doPrestige() {
+  if (state.level < 100) return;
+  state.prestige++;
+  state.multiplier = parseFloat((1 + state.prestige * 0.5).toFixed(1));
+  state.level = 0;
+  state.gold = Math.floor(state.gold * 0.1);
+  state.stone = 5;
+  addLog(`전생! ${state.prestige}회차 — 배율 x${state.multiplier}`, 'great');
+  render();
+  save();
+}
+
+function renderUpgrades() {
+  const el = document.getElementById('upgrade-list');
+  el.innerHTML = '';
+  UPGRADES.forEach(u => {
+    const lvl = state.upgrades[u.id] || 0;
+    const cost = Math.floor(u.baseCost * Math.pow(2, lvl));
+    const maxed = lvl >= u.maxLevel;
+    const div = document.createElement('div');
+    div.className = 'upgrade-item';
+    div.innerHTML = `
+      <div>
+        <div class="upgrade-name">${u.name}</div>
+        <div class="upgrade-info">${u.desc} (${lvl}/${u.maxLevel})</div>
+      </div>
+      <button class="btn-buy" onclick="buyUpgrade('${u.id}')" ${maxed || state.gold < cost ? 'disabled' : ''}>
+        ${maxed ? '완료' : fmt(cost)+'G'}
+      </button>`;
+    el.appendChild(div);
+  });
+}
+
+function buyUpgrade(id) {
+  const u = UPGRADES.find(x => x.id === id);
+  const lvl = state.upgrades[id] || 0;
+  if (lvl >= u.maxLevel) return;
+  const cost = Math.floor(u.baseCost * Math.pow(2, lvl));
+  if (state.gold < cost) return;
+  state.gold -= cost;
+  state.upgrades[id] = lvl + 1;
+  addLog(`업그레이드: ${u.name} Lv.${lvl+1}`, 'good');
+  render();
+  save();
+}
+
+function render() {
+  const tier = getSwordTier();
+  const cost = getEnhanceCost();
+  const sCost = getStoneCost();
+  const fail = getFailChance();
+  const nextMilestone = Math.ceil((state.level + 1) / 10) * 10;
+  const progressToNext = ((state.level % 10) / 10) * 100;
+
+  document.getElementById('gold-display').textContent = fmt(state.gold);
+  document.getElementById('gps-display').textContent = fmt(getGPS());
+  document.getElementById('stone-display').textContent = fmt(state.stone);
+  document.getElementById('sword-emoji').textContent = tier.emoji;
+  document.getElementById('enhance-level').textContent = '+' + state.level;
+  document.getElementById('enhance-name').textContent = tier.name;
+  document.getElementById('cost-display').textContent = fmt(cost);
+  document.getElementById('stone-cost-display').textContent = sCost;
+  document.getElementById('fail-chance').textContent = `실패 확률: ${fail}%`;
+  document.getElementById('progress-fill').style.width = progressToNext + '%';
+  document.getElementById('progress-text').textContent = `${state.level % 10} / 10`;
+  document.getElementById('prestige-info').textContent = `전생 ${state.prestige}회 | 배율 x${state.multiplier}`;
+
+  const autoBtn = document.getElementById('btn-auto');
+  autoBtn.textContent = state.autoEnhance ? '자동 강화 끄기' : '자동 강화 켜기';
+  autoBtn.className = state.autoEnhance ? 'btn-enhance active' : 'btn-enhance';
+
+  const prestigeBtn = document.getElementById('btn-prestige');
+  prestigeBtn.disabled = state.level < 100;
+  prestigeBtn.textContent = state.level >= 100 ? `전생하기 (배율 x${(1 + (state.prestige+1)*0.5).toFixed(1)} 예정)` : `전생하기 (+100 달성 시)`;
+
+  const manualBtn = document.getElementById('btn-manual');
+  manualBtn.disabled = state.gold < cost || state.stone < sCost;
+
+  renderUpgrades();
+}
+
+function save() {
+  try {
+    localStorage.setItem('sword_idle_v1', JSON.stringify(state));
+    localStorage.setItem('sword_idle_time', Date.now().toString());
+  } catch(e) {}
+}
+
+let tick = 0;
+setInterval(() => {
+  tick++;
+  const gps = getGPS();
+  state.gold += gps / 20;
+
+  const stoneUpgrade = state.upgrades.auto_stone || 0;
+  if (stoneUpgrade > 0) state.stone += (stoneUpgrade * 0.5) / 20;
+
+  state.battleTimer++;
+  if (state.battleTimer >= 40) {
+    state.battleTimer = 0;
+    const monster = getBattleMonster();
+    const reward = Math.floor(getGPS() * 3);
+    const stoneReward = Math.random() < 0.3 + state.level * 0.005 ? 1 : 0;
+    state.gold += reward;
+    if (stoneReward) {
+      state.stone += 1;
+      addLog(`${monster} 처치! +${fmt(reward)}G +1 강화석`, 'good');
+    } else {
+      addLog(`${monster} 처치! +${fmt(reward)}G`);
+    }
+  }
+
+  if (state.autoEnhance) {
+    state.autoTimer++;
+    const autoSpeed = Math.max(4, 20 - state.prestige * 2);
+    if (state.autoTimer >= autoSpeed) {
+      state.autoTimer = 0;
+      const cost = getEnhanceCost();
+      const sCost = getStoneCost();
+      if (state.gold >= cost && state.stone >= sCost) manualEnhance();
+    }
+  }
+
+  if (tick % 10 === 0) { render(); save(); }
+}, 50);
+
+render();
+addLog('게임 시작! 검을 강화해보세요.', 'good');
+</script>
