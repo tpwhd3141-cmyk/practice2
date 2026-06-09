@@ -1,4 +1,3 @@
-
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font-sans); }
@@ -111,9 +110,9 @@ const SWORD_TIERS = [
 ];
 
 const UPGRADES = [
-  { id: 'auto_stone', name: '자동 강화석 채굴', desc: '초당 0.5개 자동 획득', baseCost: 50, level: 0, maxLevel: 5, effect: () => {} },
-  { id: 'gold_boost', name: '전투력 강화', desc: '골드 획득 +20%', baseCost: 80, level: 0, maxLevel: 5, effect: () => {} },
-  { id: 'fail_reduce', name: '강화 안정화', desc: '실패 확률 -10%', baseCost: 120, level: 0, maxLevel: 3, effect: () => {} },
+  { id: 'auto_stone', name: '자동 강화석 채굴', desc: '초당 0.5개 자동 획득', baseCost: 50, level: 0, maxLevel: 20, effect: () => {} },
+  { id: 'gold_boost', name: '전투력 강화', desc: '골드 획득 +20%', baseCost: 80, level: 0, maxLevel: 20, effect: () => {} },
+  { id: 'fail_reduce', name: '강화 안정화', desc: '실패 확률 -10%', baseCost: 120, level: 0, maxLevel: 10, effect: () => {} },
 ];
 
 let state = {
@@ -314,7 +313,7 @@ setInterval(() => {
   if (stoneUpgrade > 0) state.stone += (stoneUpgrade * 0.5) / 20;
 
   state.battleTimer++;
-  if (state.battleTimer >= 40) {
+  if (state.battleTimer >= 2) {
     state.battleTimer = 0;
     const monster = getBattleMonster();
     const reward = Math.floor(getGPS() * 3);
