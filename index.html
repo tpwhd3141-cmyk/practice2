@@ -1,346 +1,366 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-sans); }
-.game { padding: 16px; max-width: 680px; }
-.top-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-.stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; text-align: center; }
-.stat-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
-.stat-value { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
-.main-area { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.sword-panel { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.sword-display { font-size: 72px; text-align: center; transition: transform 0.1s; line-height: 1; }
-.sword-display.shake { animation: shake 0.3s; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-.sword-display.success { animation: pulse 0.3s; }
-@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-.enhance-level { font-size: 28px; font-weight: 500; color: var(--color-text-primary); }
-.enhance-name { font-size: 13px; color: var(--color-text-secondary); }
-.progress-bar { width: 100%; height: 6px; background: var(--color-background-secondary); border-radius: 3px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s; background: #7F77DD; }
-.btn-enhance { width: 100%; padding: 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); font-size: 14px; cursor: pointer; transition: background 0.15s; }
-.btn-enhance:hover { background: var(--color-background-secondary); }
-.btn-enhance.active { background: #7F77DD; color: #fff; border-color: #7F77DD; }
-.btn-prestige { width: 100%; padding: 10px; border-radius: var(--border-radius-md); border: 0.5px solid #EF9F27; background: transparent; color: #BA7517; font-size: 13px; cursor: pointer; transition: background 0.15s; }
-.btn-prestige:hover:not(:disabled) { background: #FAEEDA; }
-.btn-prestige:disabled { opacity: 0.35; cursor: not-allowed; }
-.fail-text { font-size: 12px; color: var(--color-text-secondary); }
-.right-panel { display: flex; flex-direction: column; gap: 8px; }
-.battle-log { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 12px; flex: 1; overflow: hidden; }
-.log-title { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
-.log-entries { display: flex; flex-direction: column; gap: 4px; max-height: 140px; overflow: hidden; }
-.log-entry { font-size: 12px; color: var(--color-text-secondary); animation: fadeIn 0.3s; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
-.log-entry.good { color: #1D9E75; }
-.log-entry.great { color: #7F77DD; }
-.log-entry.fail { color: #E24B4A; }
-.upgrades { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 12px; }
-.upgrades-title { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
-.upgrade-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
-.upgrade-item:last-child { border-bottom: none; }
-.upgrade-name { font-size: 13px; color: var(--color-text-primary); }
-.upgrade-info { font-size: 11px; color: var(--color-text-secondary); }
-.btn-buy { padding: 4px 10px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-primary); font-size: 12px; cursor: pointer; white-space: nowrap; }
-.btn-buy:hover:not(:disabled) { background: var(--color-background-secondary); }
-.btn-buy:disabled { opacity: 0.35; cursor: not-allowed; }
-.prestige-info { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 12px; font-size: 12px; color: var(--color-text-secondary); text-align: center; }
-.flash-overlay { position: absolute; inset: 0; pointer-events: none; border-radius: var(--border-radius-lg); opacity: 0; transition: opacity 0.2s; }
-.sword-panel { position: relative; }
+#game { padding: 1rem; max-width: 480px; margin: 0 auto; font-family: var(--font-sans); }
+.bar-wrap { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 14px; margin-bottom: 12px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.bar-track { height: 12px; background: var(--color-background-tertiary); border-radius: 6px; overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
+.bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
+.love-fill { background: #D4537E; }
+.blog-fill { background: #534AB7; }
+.dog-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; }
+.dog-emoji { font-size: 52px; line-height: 1; }
+.dog-info { flex: 1; }
+.dog-name { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
+.dog-mood { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+.rebirth-badge { display: inline-block; background: #534AB7; color: #EEEDFE; font-size: 11px; padding: 2px 8px; border-radius: var(--border-radius-md); margin-top: 4px; }
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.btn-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.act-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 8px; cursor: pointer; font-size: 13px; color: var(--color-text-primary); text-align: center; transition: background 0.15s; }
+.act-btn:hover { background: var(--color-background-secondary); }
+.act-btn:active { transform: scale(0.97); }
+.act-btn .btn-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+.act-btn .btn-cost { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+.act-btn.earn { border-color: #1D9E75; }
+.act-btn.blog-btn { border-color: #534AB7; }
+.blog-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px; margin-bottom: 12px; }
+.blog-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.blog-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.blog-auto { font-size: 12px; color: #0F6E56; font-weight: 500; }
+.blog-progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.blog-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 6px; }
+.hosp-btn { width: 100%; padding: 14px; background: #D4537E; color: #FBEAF0; border: none; border-radius: var(--border-radius-lg); font-size: 15px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; margin-bottom: 12px; }
+.hosp-btn:hover { opacity: 0.88; }
+.hosp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.visit-stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.visit-stat-val { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+.visit-stat-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; }
+.log-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.8; min-height: 56px; border: 0.5px solid var(--color-border-tertiary); }
+.log-entry { animation: fadeIn 0.3s; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);} }
+.flash { animation: flash 0.4s; }
+@keyframes flash { 0%,100%{transform:scale(1);}50%{transform:scale(1.12);} }
+.toast { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 10px 18px; font-size: 13px; font-weight: 500; color: var(--color-text-primary); z-index: 99; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+.toast.show { opacity: 1; }
+.section-title { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.lv-up-flash { animation: lvFlash 0.5s; }
+@keyframes lvFlash { 0%{background:#EEEDFE;}100%{background:var(--color-background-primary);} }
+.blog-auto-pulse { animation: autoPulse 0.6s; }
+@keyframes autoPulse { 0%{transform:scale(1);color:#0F6E56;}40%{transform:scale(1.18);color:#1D9E75;}100%{transform:scale(1);color:#0F6E56;} }
+.blog-timer-bar { height: 3px; background: var(--color-background-tertiary); border-radius: 2px; overflow: hidden; margin-top: 6px; }
+.blog-timer-fill { height: 100%; background: #534AB7; border-radius: 2px; transition: width 0.1s linear; }
+.power-blogger-banner { background: linear-gradient(135deg,#534AB7,#D4537E); color: #fff; border-radius: var(--border-radius-md); padding: 10px 14px; margin-top: 8px; font-size: 13px; font-weight: 500; text-align: center; display: none; animation: bannerPop 0.6s cubic-bezier(0.175,0.885,0.32,1.275); }
+.power-blogger-banner.show { display: block; }
+@keyframes bannerPop { 0%{opacity:0;transform:scale(0.7);}60%{transform:scale(1.08);}100%{opacity:1;transform:scale(1);} }
+.confetti-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
+.confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall 2s ease-in forwards; }
+@keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;} }
 </style>
 
-<h2 class="sr-only">검 강화 방치형 게임 — 검을 강화하고 몬스터를 처치해 골드와 강화석을 모으세요</h2>
-<div class="game">
-  <div class="top-bar">
-    <div class="stat-card">
-      <div class="stat-label">골드</div>
-      <div class="stat-value" id="gold-display">0</div>
+<div id="game">
+  <h2 class="sr-only">옹심이 병원가기 — 방치형 게임</h2>
+  <div id="toast" class="toast"></div>
+
+  <div class="dog-card">
+    <div class="dog-emoji" id="dogEmoji">🐶</div>
+    <div class="dog-info">
+      <div class="dog-name">옹심이</div>
+      <div class="dog-mood" id="dogMood">집에서 뒹굴거리는 중...</div>
+      <div id="rebirthBadge"></div>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">초당 골드</div>
-      <div class="stat-value" id="gps-display">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">강화석</div>
-      <div class="stat-value" id="stone-display">0</div>
+    <div style="text-align:right;">
+      <div class="section-title" style="margin-bottom:2px;">사료값</div>
+      <div style="font-size:20px;font-weight:500;color:#0F6E56;" id="moneyVal">₩0</div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);" id="multiplierInfo">x1 배율</div>
     </div>
   </div>
 
-  <div class="main-area">
-    <div class="sword-panel" id="sword-panel">
-      <div class="sword-display" id="sword-emoji">🗡️</div>
-      <div class="enhance-level" id="enhance-level">+0</div>
-      <div class="enhance-name" id="enhance-name">낡은 단검</div>
-      <div style="width:100%">
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:4px">
-          <span>다음 단계까지</span>
-          <span id="progress-text">0 / 10</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-      </div>
-      <div style="width:100%;display:flex;flex-direction:column;gap:6px">
-        <button class="btn-enhance" id="btn-auto" onclick="toggleAuto()">자동 강화 켜기</button>
-        <button class="btn-enhance" id="btn-manual" onclick="manualEnhance()">강화하기 (골드 <span id="cost-display">10</span> + 강화석 <span id="stone-cost-display">1</span>)</button>
-      </div>
-      <div class="fail-text" id="fail-chance">실패 확률: 0%</div>
-      <button class="btn-prestige" id="btn-prestige" onclick="doPrestige()" disabled>전생하기 (+100 달성 시)</button>
-      <div class="prestige-info" id="prestige-info">전생 0회 | 배율 x1.0</div>
-    </div>
+  <div class="bar-wrap">
+    <div class="bar-label"><span>💗 애정도</span><span id="lovePct">0%</span></div>
+    <div class="bar-track"><div class="bar-fill love-fill" id="loveBar" style="width:0%"></div></div>
+  </div>
 
-    <div class="right-panel">
-      <div class="battle-log">
-        <div class="log-title">전투 로그</div>
-        <div class="log-entries" id="log-entries"></div>
+  <div class="section-title">행동하기</div>
+  <div class="btn-grid three">
+    <button class="act-btn" onclick="feed()">
+      <span class="btn-icon">🍗</span>밥 주기
+      <div class="btn-cost">₩50 · 애정 +15</div>
+    </button>
+    <button class="act-btn" onclick="walk()">
+      <span class="btn-icon">🦮</span>산책가기
+      <div class="btn-cost">₩80 · 애정 +25</div>
+    </button>
+    <button class="act-btn" onclick="toy()">
+      <span class="btn-icon">🧸</span>장난감 사기
+      <div class="btn-cost">₩150 · 애정 +40</div>
+    </button>
+  </div>
+  <div class="btn-grid">
+    <button class="act-btn earn" onclick="work()">
+      <span class="btn-icon">💼</span>사료값 벌기
+      <div class="btn-cost">클릭당 +₩<span id="earnAmt">30</span></div>
+    </button>
+    <button class="act-btn blog-btn" onclick="blogPost()">
+      <span class="btn-icon">✍️</span>글 올리기
+      <div class="btn-cost">클릭당 +₩<span id="blogClickAmt">10</span></div>
+    </button>
+  </div>
+
+  <div class="section-title">옹심이 파워블로그</div>
+  <div class="blog-card" id="blogCard">
+    <div class="blog-top">
+      <div class="blog-title">📝 옹심이 일상 블로그 <span id="blogLvLabel" style="font-size:11px;color:#534AB7;font-weight:500;">Lv1</span></div>
+      <div class="blog-auto">자동 +₩<span id="blogAutoAmt">0</span>/5초</div>
+    </div>
+    <div class="blog-progress-label">
+      <span>글 올리기 진행도</span>
+      <span id="blogProgressLabel">0 / 10회</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill blog-fill" id="blogBar" style="width:0%"></div></div>
+    <div class="blog-sub" id="blogSub">글을 10번 올리면 Lv2로 올라가요!</div>
+    <div class="blog-timer-bar" id="blogTimerBarWrap" style="display:none"><div class="blog-timer-fill" id="blogTimerFill" style="width:100%"></div></div>
+    <div class="power-blogger-banner" id="powerBloggerBanner">🏆 파워블로거 등극! 자동 수입 10배 달성! 🎉</div>
+  </div>
+
+  <button class="hosp-btn" id="hospBtn" onclick="goHospital()" disabled>
+    🏥 병원 데려가기 (확률: <span id="hospBtnPct">0%</span>)
+  </button>
+
+  <div class="section-title">기록</div>
+  <div class="visit-stat">
+    <span style="font-size:20px;">🏥</span>
+    <div>
+      <div style="display:flex;align-items:baseline;gap:6px;">
+        <div class="visit-stat-val" id="visitVal">0번</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);">총 병원 방문</div>
       </div>
-      <div class="upgrades">
-        <div class="upgrades-title">업그레이드</div>
-        <div id="upgrade-list"></div>
-      </div>
+      <div class="visit-stat-desc" id="visitDesc">병원 방문 횟수만큼 돈 배율 증가 (현재 x1)</div>
     </div>
   </div>
+
+  <div class="section-title">최근 기록</div>
+  <div class="log-box" id="logBox">게임을 시작했어요! 옹심이에게 관심을 줘보세요 🐾</div>
 </div>
 
 <script>
-const SWORD_TIERS = [
-  { max: 10,  name: '낡은 단검',  emoji: '🗡️' },
-  { max: 25,  name: '철제 장검',  emoji: '⚔️' },
-  { max: 40,  name: '강철 대검',  emoji: '🔪' },
-  { max: 60,  name: '마법 검',    emoji: '✨' },
-  { max: 80,  name: '용암 검',    emoji: '🔥' },
-  { max: 99,  name: '천상의 검',  emoji: '💫' },
-  { max: 100, name: '전설의 검',  emoji: '⭐' },
-];
+const SAVE_KEY = "ongsim_v7";
+const BLOG_MAX_LV = 10;
+const AUTO_INTERVAL = 5000;
 
-const UPGRADES = [
-  { id: 'auto_stone', name: '자동 강화석 채굴', desc: '초당 0.5개 자동 획득', baseCost: 50, level: 0, maxLevel: 20, effect: () => {} },
-  { id: 'gold_boost', name: '전투력 강화', desc: '골드 획득 +20%', baseCost: 80, level: 0, maxLevel: 20, effect: () => {} },
-  { id: 'fail_reduce', name: '강화 안정화', desc: '실패 확률 -10%', baseCost: 120, level: 0, maxLevel: 10, effect: () => {} },
-];
+const defaultState = { money: 0, love: 0, rebirth: 0, visits: 0, blogLv: 1, blogPosts: 0 };
+let state = Object.assign({}, defaultState);
 
-let state = {
-  gold: 10,
-  stone: 3,
-  level: 0,
-  prestige: 0,
-  multiplier: 1.0,
-  autoEnhance: false,
-  upgrades: { auto_stone: 0, gold_boost: 0, fail_reduce: 0 },
-  autoTimer: 0,
-  battleTimer: 0,
-};
-
-try {
-  const saved = localStorage.getItem('sword_idle_v1');
-  if (saved) state = { ...state, ...JSON.parse(saved) };
-} catch(e) {}
-
-const offlineSeconds = Math.min((Date.now() - (parseInt(localStorage.getItem('sword_idle_time') || Date.now()))) / 1000, 3600);
-if (offlineSeconds > 10) {
-  const offlineGold = Math.floor(getGPS() * offlineSeconds);
-  state.gold += offlineGold;
-  if (offlineGold > 0) addLog(`오프라인 보상: +${fmt(offlineGold)} 골드`, 'good');
+// ── 저장/불러오기 ──────────────────────────────────
+function saveGame() {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {}
 }
-
-function getGPS() {
-  const base = 1 + state.level * 0.5;
-  const goldBoost = 1 + (state.upgrades.gold_boost || 0) * 0.2;
-  return parseFloat((base * state.multiplier * goldBoost * 1000000).toFixed(1));
-}
-
-function getEnhanceCost() {
-  return Math.floor(10 * Math.pow(1.4, state.level) * (1 / state.multiplier) / 1000000);
-}
-
-function getStoneCost() { return Math.max(1, Math.floor(state.level / 10)); }
-
-function getFailChance() {
-  if (state.level < 10) return 0;
-  const base = Math.min(80, (state.level - 10) * 2);
-  const reduce = (state.upgrades.fail_reduce || 0) * 10;
-  return Math.max(0, base - reduce);
-}
-
-function getSwordTier() {
-  for (const t of SWORD_TIERS) if (state.level <= t.max) return t;
-  return SWORD_TIERS[SWORD_TIERS.length - 1];
-}
-
-function fmt(n) {
-  if (n >= 1e9) return (n/1e9).toFixed(1) + 'B';
-  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
-  if (n >= 1e3) return (n/1e3).toFixed(1) + 'K';
-  return Math.floor(n).toString();
-}
-
-function addLog(msg, cls='') {
-  const el = document.getElementById('log-entries');
-  const div = document.createElement('div');
-  div.className = 'log-entry' + (cls ? ' ' + cls : '');
-  div.textContent = msg;
-  el.insertBefore(div, el.firstChild);
-  while (el.children.length > 8) el.removeChild(el.lastChild);
-}
-
-const MONSTERS = ['슬라임','고블린','스켈레톤','오크','트롤','드래곤','마왕'];
-function getBattleMonster() {
-  const idx = Math.min(Math.floor(state.level / 15), MONSTERS.length - 1);
-  return MONSTERS[idx];
-}
-
-function manualEnhance() {
-  const cost = getEnhanceCost();
-  const sCost = getStoneCost();
-  if (state.gold < cost || state.stone < sCost) return;
-  state.gold -= cost;
-  state.stone -= sCost;
-  const fail = getFailChance();
-  const roll = Math.random() * 100;
-  if (roll < fail) {
-    state.level = Math.max(0, state.level - 1);
-    addLog(`강화 실패! +${state.level+1} → +${state.level} (-1)`, 'fail');
-    document.getElementById('sword-panel').classList.add('fail');
-    document.getElementById('sword-emoji').classList.add('shake');
-    setTimeout(() => document.getElementById('sword-emoji').classList.remove('shake'), 400);
-  } else {
-    state.level++;
-    const tier = getSwordTier();
-    addLog(`강화 성공! +${state.level} ${tier.name}`, state.level % 10 === 0 ? 'great' : 'good');
-    document.getElementById('sword-emoji').classList.add('success');
-    setTimeout(() => document.getElementById('sword-emoji').classList.remove('success'), 400);
-  }
-  render();
-  save();
-}
-
-function toggleAuto() {
-  state.autoEnhance = !state.autoEnhance;
-  render();
-}
-
-function doPrestige() {
-  if (state.level < 100) return;
-  state.prestige++;
-  state.multiplier = parseFloat((1 + state.prestige * 0.5).toFixed(1));
-  state.level = 0;
-  state.gold = Math.floor(state.gold * 0.1);
-  state.stone = 5;
-  addLog(`전생! ${state.prestige}회차 — 배율 x${state.multiplier}`, 'great');
-  render();
-  save();
-}
-
-function renderUpgrades() {
-  const el = document.getElementById('upgrade-list');
-  el.innerHTML = '';
-  UPGRADES.forEach(u => {
-    const lvl = state.upgrades[u.id] || 0;
-    const cost = Math.floor(u.baseCost * Math.pow(2, lvl));
-    const maxed = lvl >= u.maxLevel;
-    const div = document.createElement('div');
-    div.className = 'upgrade-item';
-    div.innerHTML = `
-      <div>
-        <div class="upgrade-name">${u.name}</div>
-        <div class="upgrade-info">${u.desc} (${lvl}/${u.maxLevel})</div>
-      </div>
-      <button class="btn-buy" onclick="buyUpgrade('${u.id}')" ${maxed || state.gold < cost ? 'disabled' : ''}>
-        ${maxed ? '완료' : fmt(cost)+'G'}
-      </button>`;
-    el.appendChild(div);
-  });
-}
-
-function buyUpgrade(id) {
-  const u = UPGRADES.find(x => x.id === id);
-  const lvl = state.upgrades[id] || 0;
-  if (lvl >= u.maxLevel) return;
-  const cost = Math.floor(u.baseCost * Math.pow(2, lvl));
-  if (state.gold < cost) return;
-  state.gold -= cost;
-  state.upgrades[id] = lvl + 1;
-  addLog(`업그레이드: ${u.name} Lv.${lvl+1}`, 'good');
-  render();
-  save();
-}
-
-function render() {
-  const tier = getSwordTier();
-  const cost = getEnhanceCost();
-  const sCost = getStoneCost();
-  const fail = getFailChance();
-  const nextMilestone = Math.ceil((state.level + 1) / 10) * 10;
-  const progressToNext = ((state.level % 10) / 10) * 100;
-
-  document.getElementById('gold-display').textContent = fmt(state.gold);
-  document.getElementById('gps-display').textContent = fmt(getGPS());
-  document.getElementById('stone-display').textContent = fmt(state.stone);
-  document.getElementById('sword-emoji').textContent = tier.emoji;
-  document.getElementById('enhance-level').textContent = '+' + state.level;
-  document.getElementById('enhance-name').textContent = tier.name;
-  document.getElementById('cost-display').textContent = fmt(cost);
-  document.getElementById('stone-cost-display').textContent = sCost;
-  document.getElementById('fail-chance').textContent = `실패 확률: ${fail}%`;
-  document.getElementById('progress-fill').style.width = progressToNext + '%';
-  document.getElementById('progress-text').textContent = `${state.level % 10} / 10`;
-  document.getElementById('prestige-info').textContent = `전생 ${state.prestige}회 | 배율 x${state.multiplier}`;
-
-  const autoBtn = document.getElementById('btn-auto');
-  autoBtn.textContent = state.autoEnhance ? '자동 강화 끄기' : '자동 강화 켜기';
-  autoBtn.className = state.autoEnhance ? 'btn-enhance active' : 'btn-enhance';
-
-  const prestigeBtn = document.getElementById('btn-prestige');
-  prestigeBtn.disabled = state.level < 100;
-  prestigeBtn.textContent = state.level >= 100 ? `전생하기 (배율 x${(1 + (state.prestige+1)*0.5).toFixed(1)} 예정)` : `전생하기 (+100 달성 시)`;
-
-  const manualBtn = document.getElementById('btn-manual');
-  manualBtn.disabled = state.gold < cost || state.stone < sCost;
-
-  renderUpgrades();
-}
-
-function save() {
+function loadGame() {
   try {
-    localStorage.setItem('sword_idle_v1', JSON.stringify(state));
-    localStorage.setItem('sword_idle_time', Date.now().toString());
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (saved) state = Object.assign({}, defaultState, JSON.parse(saved));
   } catch(e) {}
 }
 
-let tick = 0;
-setInterval(() => {
-  tick++;
-  const gps = getGPS();
-  state.gold += gps / 20;
+// ── 계산 함수 ──────────────────────────────────────
+function blogPostsNeeded(lv) { return lv * 10; }
+function multiplier() { return state.rebirth + 1; }
+function isPowerBlogger() { return state.blogLv >= BLOG_MAX_LV; }
+// 파워블로거 달성 시 자동수입 10배
+function blogAutoIncome() {
+  if (isPowerBlogger()) return (BLOG_MAX_LV - 1) * 5 * multiplier() * 10;
+  return (state.blogLv - 1) * 5 * multiplier();
+}
+function blogClickIncome() { return 10 * multiplier(); }
+function hospChance() { return Math.min(100, Math.floor((state.love / 100) * 85 + state.rebirth * 5)); }
 
-  const stoneUpgrade = state.upgrades.auto_stone || 0;
-  if (stoneUpgrade > 0) state.stone += (stoneUpgrade * 0.5) / 20;
+const moods = [[80,"꼬리치며 신나게 뛰어다니는 중! 🐾"],[60,"골골거리며 기지개 켜는 중..."],[40,"소파 위에서 졸고 있는 중..."],[20,"배고프다고 눈치 주는 중 👀"],[0,"집에서 뒹굴거리는 중..."]];
+const emojis = [[80,"🐕"],[60,"🐶"],[40,"😴"],[20,"🥺"],[0,"🐶"]];
+function getMood() { for (const [t,m] of moods) if (state.love >= t) return m; return moods[4][1]; }
+function getEmoji() { for (const [t,e] of emojis) if (state.love >= t) return e; return "🐶"; }
 
-  state.battleTimer++;
-  if (state.battleTimer >= 2) {
-    state.battleTimer = 0;
-    const monster = getBattleMonster();
-    const reward = Math.floor(getGPS() * 3);
-    const stoneReward = Math.random() < 0.3 + state.level * 0.005 ? 1 : 0;
-    state.gold += reward;
-    if (stoneReward) {
-      state.stone += 1;
-      addLog(`${monster} 처치! +${fmt(reward)}G +1 강화석`, 'good');
+// ── 자동수입 타이머 애니메이션 ──────────────────────
+let autoTimerStart = Date.now();
+function updateTimerBar() {
+  const wrap = document.getElementById("blogTimerBarWrap");
+  const fill = document.getElementById("blogTimerFill");
+  if (blogAutoIncome() <= 0) { wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  const elapsed = (Date.now() - autoTimerStart) % AUTO_INTERVAL;
+  const pct = 100 - Math.round((elapsed / AUTO_INTERVAL) * 100);
+  fill.style.width = pct + "%";
+}
+setInterval(updateTimerBar, 100);
+
+// ── 렌더 ───────────────────────────────────────────
+function render() {
+  const love = Math.min(100, Math.round(state.love));
+  const hosp = hospChance();
+  document.getElementById("loveBar").style.width = love + "%";
+  document.getElementById("lovePct").textContent = love + "%";
+  document.getElementById("hospBtnPct").textContent = hosp + "%";
+  document.getElementById("moneyVal").textContent = "₩" + state.money.toLocaleString();
+  document.getElementById("multiplierInfo").textContent = "x" + multiplier() + " 배율";
+  document.getElementById("visitVal").textContent = state.visits + "번";
+  document.getElementById("visitDesc").textContent = "병원 방문 횟수만큼 돈 배율 증가 (현재 x" + multiplier() + ")";
+  document.getElementById("dogMood").textContent = getMood();
+  document.getElementById("dogEmoji").textContent = getEmoji();
+  document.getElementById("hospBtn").disabled = hosp < 10;
+  document.getElementById("earnAmt").textContent = 30 * multiplier();
+  document.getElementById("blogClickAmt").textContent = blogClickIncome();
+  document.getElementById("blogAutoAmt").textContent = blogAutoIncome();
+  document.getElementById("blogLvLabel").textContent = "Lv" + state.blogLv;
+  const b = document.getElementById("rebirthBadge");
+  b.innerHTML = state.rebirth > 0 ? `<span class="rebirth-badge">✨ 환생 ${state.rebirth}회</span>` : "";
+
+  const banner = document.getElementById("powerBloggerBanner");
+  if (isPowerBlogger()) {
+    banner.classList.add("show");
+    document.getElementById("blogProgressLabel").textContent = "최대 레벨 달성! 🏆";
+    document.getElementById("blogBar").style.width = "100%";
+    document.getElementById("blogSub").textContent = "자동 +₩" + blogAutoIncome() + "/5초 (10배 보너스!)";
+  } else {
+    banner.classList.remove("show");
+    const needed = blogPostsNeeded(state.blogLv);
+    const progress = Math.min(state.blogPosts, needed);
+    document.getElementById("blogProgressLabel").textContent = progress + " / " + needed + "회";
+    document.getElementById("blogBar").style.width = Math.round((progress / needed) * 100) + "%";
+    document.getElementById("blogSub").textContent = "글을 " + needed + "번 올리면 Lv" + (state.blogLv + 1) + " 달성! (자동수입 +₩5/5초)";
+  }
+}
+
+// ── 로그 / 토스트 ──────────────────────────────────
+function addLog(msg, important) {
+  const box = document.getElementById("logBox");
+  const el = document.createElement("div");
+  el.className = "log-entry";
+  if (important) el.style.fontWeight = "500";
+  el.textContent = msg;
+  box.insertBefore(el, box.firstChild);
+  if (box.children.length > 5) box.removeChild(box.lastChild);
+}
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1800);
+}
+
+// ── 행동 ───────────────────────────────────────────
+function spendMoney(cost) {
+  if (state.money < cost) { toast("사료값이 부족해요 💸"); return false; }
+  state.money -= cost; return true;
+}
+function gainLove(amt, label) {
+  state.love = Math.min(100, state.love + amt);
+  const d = document.getElementById("dogEmoji");
+  d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash");
+  addLog(label); render(); saveGame();
+}
+function feed()  { if (spendMoney(50))  gainLove(15, "🍗 밥을 줬어요! 애정 +15"); }
+function walk()  { if (spendMoney(80))  gainLove(25, "🦮 산책했어요! 애정 +25"); }
+function toy()   { if (spendMoney(150)) gainLove(40, "🧸 장난감 샀어요! 애정 +40"); }
+function work() {
+  const earned = 30 * multiplier();
+  state.money += earned;
+  addLog("💼 사료값 벌었어요! ₩" + earned);
+  toast("₩" + earned + " 획득!");
+  render(); saveGame();
+}
+function blogPost() {
+  const earned = blogClickIncome();
+  state.money += earned;
+  if (!isPowerBlogger()) {
+    state.blogPosts++;
+    const needed = blogPostsNeeded(state.blogLv);
+    if (state.blogPosts >= needed) {
+      state.blogPosts = 0;
+      state.blogLv++;
+      const card = document.getElementById("blogCard");
+      card.classList.remove("lv-up-flash"); void card.offsetWidth; card.classList.add("lv-up-flash");
+      if (isPowerBlogger()) {
+        // 파워블로거 달성!
+        addLog("🏆 파워블로거 등극!! 자동수입 10배 달성!", true);
+        toast("🏆 파워블로거 달성!!!");
+        spawnConfetti();
+        const banner = document.getElementById("powerBloggerBanner");
+        banner.classList.remove("show"); void banner.offsetWidth; banner.classList.add("show");
+      } else {
+        addLog("📈 블로그 Lv" + state.blogLv + " 달성! 자동수입 +₩5/5초 증가!", true);
+        toast("🎉 파워블로그 Lv" + state.blogLv + " 달성!");
+      }
     } else {
-      addLog(`${monster} 처치! +${fmt(reward)}G`);
+      addLog("✍️ 글 올렸어요! ₩" + earned + " 수익! (" + state.blogPosts + "/" + needed + "회)");
+      toast("✍️ ₩" + earned + " 광고 수익!");
     }
+  } else {
+    addLog("✍️ 글 올렸어요! ₩" + earned + " 수익!");
+    toast("✍️ ₩" + earned + " 광고 수익!");
   }
-
-  if (state.autoEnhance) {
-    state.autoTimer++;
-    const autoSpeed = Math.max(4, 20 - state.prestige * 2);
-    if (state.autoTimer >= autoSpeed) {
-      state.autoTimer = 0;
-      const cost = getEnhanceCost();
-      const sCost = getStoneCost();
-      if (state.gold >= cost && state.stone >= sCost) manualEnhance();
-    }
+  render(); saveGame();
+}
+function goHospital() {
+  const chance = hospChance();
+  state.visits++;
+  if (Math.random() * 100 < chance) {
+    state.rebirth++;
+    state.love = 0;
+    state.money = Math.round(state.money * multiplier());
+    // 환생 시 블로그 초기화
+    state.blogLv = 1;
+    state.blogPosts = 0;
+    addLog("🎉 병원 성공! 환생 " + state.rebirth + "회 — 재화 x" + multiplier() + " 배율! 블로그 초기화", true);
+    toast("🏥 병원 성공! ✨ 환생 " + state.rebirth + "회!");
+    document.getElementById("dogEmoji").textContent = "😇";
+    setTimeout(() => render(), 500);
+  } else {
+    state.love = Math.max(0, state.love - 20);
+    addLog("😤 옹심이가 도망쳤어요! (확률 " + chance + "% 실패) 애정 -20");
+    toast("옹심이: 거기는 절대 안 가!");
   }
+  render(); saveGame();
+}
 
-  if (tick % 10 === 0) { render(); save(); }
-}, 50);
+// ── 파워블로거 달성 시 콘페티 ──────────────────────
+function spawnConfetti() {
+  const wrap = document.createElement("div");
+  wrap.className = "confetti-wrap";
+  document.body.appendChild(wrap);
+  const colors = ["#534AB7","#D4537E","#1D9E75","#F5C842","#FF6B6B","#EEEDFE"];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement("div");
+    p.className = "confetti-piece";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.top = "-10px";
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDelay = (Math.random() * 1.2) + "s";
+    p.style.animationDuration = (1.5 + Math.random() * 1) + "s";
+    p.style.width = (6 + Math.random() * 6) + "px";
+    p.style.height = (6 + Math.random() * 6) + "px";
+    wrap.appendChild(p);
+  }
+  setTimeout(() => wrap.remove(), 3500);
+}
 
+// ── 자동수입 인터벌 ────────────────────────────────
+setInterval(() => {
+  const auto = blogAutoIncome();
+  if (auto > 0) {
+    state.money += auto;
+    autoTimerStart = Date.now();
+    // 자동수입 펄스 애니메이션
+    const el = document.querySelector(".blog-auto");
+    if (el) { el.classList.remove("blog-auto-pulse"); void el.offsetWidth; el.classList.add("blog-auto-pulse"); }
+    render(); saveGame();
+  }
+}, AUTO_INTERVAL);
+
+setInterval(() => { state.love = Math.max(0, state.love - 0.8); render(); saveGame(); }, 3000);
+
+// ── 초기화 ─────────────────────────────────────────
+loadGame();
 render();
-addLog('게임 시작! 검을 강화해보세요.', 'good');
+if (state.visits === 0 && state.money === 0) {
+  addLog("💡 글 올리기를 클릭할수록 블로그 레벨이 올라가요!");
+} else {
+  addLog("💾 저장된 게임을 불러왔어요!");
+}
 </script>
