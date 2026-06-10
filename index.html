@@ -400,7 +400,7 @@ function render() {
   document.getElementById("visitVal").textContent = state.visits + "번";
   document.getElementById("visitDesc").textContent = "병원 방문 횟수만큼 돈 배율 증가 (현재 x" + multiplier() + ")";
   document.getElementById("dogMood").textContent = getMood();
-  document.getElementById("dogEmoji").textContent = getEmoji();
+  if (!customDogImg) document.getElementById("dogEmoji").textContent = getEmoji();
   document.getElementById("hospBtn").disabled = hosp < 10;
   const warn = document.getElementById("loveWarning");
   warn.style.display = love <= 10 ? "block" : "none";
