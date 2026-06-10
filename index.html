@@ -593,10 +593,10 @@ function closeHospAnim() {
     state.rebirth++;
     state.rebirthPts++;
     state.love = 0;
-    state.money = Math.round(state.money * multiplier());
+    state.money = 0;
     state.blogLv = 1;
     state.blogPosts = 0;
-    addLog("🎉 병원 성공! 환생 " + state.rebirth + "회 — 재화 x" + multiplier() + " 배율! 블로그 초기화", true);
+    addLog("🎉 병원 성공! 환생 " + state.rebirth + "회 — x" + multiplier() + " 배율 적용! 돈·블로그 초기화", true);
     toast("🏥 병원 성공! ✨ 환생 " + state.rebirth + "회!");
     const dogEl = document.getElementById("dogEmoji");
     if (!customDogImg) dogEl.textContent = "😇";
