@@ -352,7 +352,7 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
   <div id="toast" class="toast"></div>
 
   <div class="dog-card">
-    <div class="dog-emoji" id="dogEmoji">🐶</div>
+    <div class="dog-emoji" id="dogEmoji" onclick="secretClick()" style="cursor:pointer;">🐶</div>
     <div class="dog-info">
       <div class="dog-name">옹심이</div>
       <div class="dog-mood" id="dogMood">집에서 뒹굴거리는 중...</div>
@@ -1079,6 +1079,19 @@ setInterval(() => {
   runAutoUpgrades();
   render(); saveGame();
 }, 1000);
+
+let secretClickCount = 0;
+let secretClickTimer = null;
+function secretClick() {
+  secretClickCount++;
+  clearTimeout(secretClickTimer);
+  secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 1500);
+  if (secretClickCount >= 5) {
+    secretClickCount = 0;
+    clearTimeout(secretClickTimer);
+    showEnding();
+  }
+}
 
 loadGame();
 try {
