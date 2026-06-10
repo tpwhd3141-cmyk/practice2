@@ -54,6 +54,80 @@
 .confetti-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
 .confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall 2s ease-in forwards; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;} }
+.love-warning { background: #FFF3CD; border: 0.5px solid #F5A623; border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 12px; color: #7A4E00; margin-bottom: 12px; animation: fadeIn 0.3s; }
+.upgrade-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+.upgrade-card.locked { opacity: 0.5; }
+.upgrade-card.owned { border-color: #1D9E75; }
+.upgrade-icon { font-size: 28px; flex-shrink: 0; }
+.upgrade-info { flex: 1; min-width: 0; }
+.upgrade-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.upgrade-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.upgrade-cost { font-size: 11px; color: #534AB7; font-weight: 500; margin-top: 3px; }
+.upgrade-cost.affordable { color: #1D9E75; }
+.upgrade-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.buy-btn { background: #534AB7; color: #EEEDFE; border: none; border-radius: var(--border-radius-md); padding: 6px 12px; font-size: 12px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
+.buy-btn:hover { opacity: 0.85; }
+.buy-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.toggle-wrap { display: flex; align-items: center; gap: 6px; }
+.toggle-label { font-size: 11px; color: var(--color-text-tertiary); }
+.toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--color-background-tertiary); border-radius: 20px; transition: 0.2s; border: 0.5px solid var(--color-border-secondary); }
+.toggle-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background: white; border-radius: 50%; transition: 0.2s; }
+input:checked + .toggle-slider { background: #1D9E75; border-color: #1D9E75; }
+input:checked + .toggle-slider:before { transform: translateX(16px); }
+.rebirth-pts { font-size: 13px; font-weight: 500; color: #534AB7; }
+
+/* ── 병원 애니메이션 오버레이 ── */
+.hosp-overlay { position: fixed; inset: 0; background: #E8F5E9; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; overflow: hidden; }
+.hosp-scene { position: relative; width: 100%; height: 180px; }
+.hosp-road { position: absolute; bottom: 30px; left: 0; right: 0; height: 24px; background: #B0BEC5; border-radius: 4px; }
+.hosp-road::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: repeating-linear-gradient(90deg, #fff 0, #fff 20px, transparent 20px, transparent 40px); transform: translateY(-50%); }
+.hosp-building { position: absolute; bottom: 54px; font-size: 52px; line-height: 1; }
+.hosp-building.left  { left: 8px; }
+.hosp-building.right { right: 8px; }
+.hosp-dog { position: absolute; bottom: 54px; font-size: 40px; line-height: 1; transition: none; }
+.hosp-dog img { width: 48px; height: 48px; object-fit: cover; border-radius: 50%; }
+.hosp-status { font-size: 15px; font-weight: 500; color: #333; margin-top: 12px; text-align: center; }
+.hosp-distract { position: absolute; bottom: 54px; font-size: 32px; opacity: 0; pointer-events: none; }
+
+@keyframes dogWalkSuccess {
+  0%   { left: 5%; }
+  100% { left: 78%; }
+}
+@keyframes dogWalkFail {
+  0%   { left: 5%; transform: scaleX(1); }
+  45%  { left: 40%; transform: scaleX(1); }
+  55%  { left: 40%; transform: scaleX(1); }
+  100% { left: 5%; top: -60px; transform: scaleX(-1) rotate(-30deg); opacity: 0; }
+}
+@keyframes dogBounce {
+  0%,100% { bottom: 54px; }
+  50%      { bottom: 64px; }
+}
+@keyframes distractAppear {
+  0%   { opacity: 0; left: 55%; bottom: 54px; transform: scale(0.5); }
+  30%  { opacity: 1; left: 55%; bottom: 54px; transform: scale(1.2); }
+  100% { opacity: 1; left: 55%; bottom: 54px; transform: scale(1); }
+}
+@keyframes resultPop {
+  0%   { opacity: 0; transform: scale(0.6); }
+  60%  { transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.hosp-result { font-size: 52px; animation: resultPop 0.5s ease forwards; margin-top: 8px; }
+.hosp-result-text { font-size: 17px; font-weight: 600; margin-top: 6px; text-align: center; }
+.hosp-close-btn { margin-top: 18px; padding: 10px 32px; border: none; border-radius: 99px; font-size: 14px; font-weight: 500; cursor: pointer; }
+
+/* ── 이미지 업로드 ── */
+.img-upload-wrap { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+.img-preview { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-border-secondary); background: var(--color-background-tertiary); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; overflow: hidden; }
+.img-preview img { width: 100%; height: 100%; object-fit: cover; }
+.img-upload-info { flex: 1; }
+.img-upload-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.img-upload-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.img-upload-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 6px 12px; font-size: 12px; cursor: pointer; color: var(--color-text-primary); white-space: nowrap; }
+.img-upload-btn:hover { background: var(--color-background-secondary); }
 </style>
 
 <div id="game">
@@ -78,20 +152,23 @@
     <div class="bar-label"><span>💗 애정도</span><span id="lovePct">0%</span></div>
     <div class="bar-track"><div class="bar-fill love-fill" id="loveBar" style="width:0%"></div></div>
   </div>
+  <div class="love-warning" id="loveWarning" style="display:none">
+    ⚠️ 애정도가 너무 낮아요! 밥을 주거나 산책을 시켜서 애정도를 올려주세요 🐾
+  </div>
 
   <div class="section-title">행동하기</div>
   <div class="btn-grid three">
     <button class="act-btn" onclick="feed()">
       <span class="btn-icon">🍗</span>밥 주기
-      <div class="btn-cost">₩50 · 애정 +15</div>
+      <div class="btn-cost">₩50 · 애정 +1</div>
     </button>
     <button class="act-btn" onclick="walk()">
       <span class="btn-icon">🦮</span>산책가기
-      <div class="btn-cost">₩80 · 애정 +25</div>
+      <div class="btn-cost">₩80 · 애정 +2</div>
     </button>
     <button class="act-btn" onclick="toy()">
       <span class="btn-icon">🧸</span>장난감 사기
-      <div class="btn-cost">₩150 · 애정 +40</div>
+      <div class="btn-cost">₩150 · 애정 +3</div>
     </button>
   </div>
   <div class="btn-grid">
@@ -124,6 +201,62 @@
   <button class="hosp-btn" id="hospBtn" onclick="goHospital()" disabled>
     🏥 병원 데려가기 (확률: <span id="hospBtnPct">0%</span>)
   </button>
+  <div style="font-size:11px;color:var(--color-text-tertiary);text-align:center;margin-top:-8px;margin-bottom:12px;">
+    확률 = 애정도 × 0.5 + 환생횟수 (최대 100%)
+  </div>
+
+  <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
+    <span>✨ 영구 업그레이드</span>
+    <span class="rebirth-pts">포인트: <span id="rebirthPts">0</span>개</span>
+  </div>
+
+  <div class="upgrade-card locked" id="upg0">
+    <div class="upgrade-icon">🤖</div>
+    <div class="upgrade-info">
+      <div class="upgrade-name">자동 사료 배급기</div>
+      <div class="upgrade-desc">돈이 생길 때마다 자동으로 밥 주기</div>
+      <div class="upgrade-cost" id="upg0cost">포인트 3개 필요</div>
+    </div>
+    <div class="upgrade-right">
+      <button class="buy-btn" id="upg0btn" onclick="buyUpgrade(0)" disabled>구매</button>
+      <div class="toggle-wrap" id="upg0toggle" style="display:none">
+        <span class="toggle-label" id="upg0lbl">OFF</span>
+        <label class="toggle"><input type="checkbox" id="upg0chk" onchange="toggleUpgrade(0)"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="upgrade-card locked" id="upg1">
+    <div class="upgrade-icon">🦾</div>
+    <div class="upgrade-info">
+      <div class="upgrade-name">AI 로봇 산책 서비스</div>
+      <div class="upgrade-desc">돈이 생길 때마다 자동으로 산책시키기</div>
+      <div class="upgrade-cost" id="upg1cost">포인트 5개 필요</div>
+    </div>
+    <div class="upgrade-right">
+      <button class="buy-btn" id="upg1btn" onclick="buyUpgrade(1)" disabled>구매</button>
+      <div class="toggle-wrap" id="upg1toggle" style="display:none">
+        <span class="toggle-label" id="upg1lbl">OFF</span>
+        <label class="toggle"><input type="checkbox" id="upg1chk" onchange="toggleUpgrade(1)"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="upgrade-card locked" id="upg2">
+    <div class="upgrade-icon">🧠</div>
+    <div class="upgrade-info">
+      <div class="upgrade-name">AI 블로그 자동 글쓰기</div>
+      <div class="upgrade-desc">1초마다 자동으로 글 올리기</div>
+      <div class="upgrade-cost" id="upg2cost">포인트 7개 필요</div>
+    </div>
+    <div class="upgrade-right">
+      <button class="buy-btn" id="upg2btn" onclick="buyUpgrade(2)" disabled>구매</button>
+      <div class="toggle-wrap" id="upg2toggle" style="display:none">
+        <span class="toggle-label" id="upg2lbl">OFF</span>
+        <label class="toggle"><input type="checkbox" id="upg2chk" onchange="toggleUpgrade(2)"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+  </div>
 
   <div class="section-title">기록</div>
   <div class="visit-stat">
@@ -139,14 +272,46 @@
 
   <div class="section-title">최근 기록</div>
   <div class="log-box" id="logBox">게임을 시작했어요! 옹심이에게 관심을 줘보세요 🐾</div>
+
+  <div style="height:12px;"></div>
+  <div class="section-title">옹심이 꾸미기</div>
+  <div class="img-upload-wrap">
+    <div class="img-preview" id="imgPreview"><span id="imgPreviewEmoji">🐶</span></div>
+    <div class="img-upload-info">
+      <div class="img-upload-title">옹심이 사진 바꾸기</div>
+      <div class="img-upload-desc">JPG, PNG 이미지를 업로드하면 병원 애니메이션에 적용돼요</div>
+    </div>
+    <label class="img-upload-btn">
+      📷 업로드
+      <input type="file" accept="image/*" style="display:none" onchange="handleImgUpload(event)">
+    </label>
+  </div>
+</div>
+
+<!-- 병원 애니메이션 오버레이 -->
+<div class="hosp-overlay" id="hospOverlay" style="display:none">
+  <div class="hosp-scene" id="hospScene">
+    <div class="hosp-road"></div>
+    <div class="hosp-building left">🏠</div>
+    <div class="hosp-building right">🏥</div>
+    <div class="hosp-distract" id="hospDistract"></div>
+    <div class="hosp-dog" id="hospDogAnim"><span id="hospDogEmoji">🐶</span></div>
+  </div>
+  <div class="hosp-status" id="hospStatus">옹심이가 병원으로 향하고 있어요...</div>
+  <div id="hospResultWrap" style="display:none; text-align:center;">
+    <div class="hosp-result" id="hospResultIcon"></div>
+    <div class="hosp-result-text" id="hospResultText"></div>
+    <button class="hosp-close-btn" id="hospCloseBtn" onclick="closeHospAnim()">확인</button>
+  </div>
 </div>
 
 <script>
-const SAVE_KEY = "ongsim_v7";
-const BLOG_MAX_LV = 10;
+const SAVE_KEY = "ongsim_v10";
+const BLOG_MAX_LV = 8;
 const AUTO_INTERVAL = 5000;
 
-const defaultState = { money: 0, love: 0, rebirth: 0, visits: 0, blogLv: 1, blogPosts: 0 };
+const UPGRADE_COSTS = [3, 5, 7];
+const defaultState = { money: 0, love: 0, rebirth: 0, visits: 0, blogLv: 1, blogPosts: 0, rebirthPts: 0, upgOwned: [false, false, false], upgOn: [false, false, false] };
 let state = Object.assign({}, defaultState);
 
 // ── 저장/불러오기 ──────────────────────────────────
@@ -169,15 +334,48 @@ function blogAutoIncome() {
   if (isPowerBlogger()) return (BLOG_MAX_LV - 1) * 5 * multiplier() * 10;
   return (state.blogLv - 1) * 5 * multiplier();
 }
-function blogClickIncome() { return 10 * multiplier(); }
-function hospChance() { return Math.min(100, Math.floor((state.love / 100) * 85 + state.rebirth * 5)); }
+function blogClickIncome() { return 1 * multiplier(); }
+function hospChance() { return Math.min(100, Math.floor(state.love * 0.5 + state.rebirth)); }
 
 const moods = [[80,"꼬리치며 신나게 뛰어다니는 중! 🐾"],[60,"골골거리며 기지개 켜는 중..."],[40,"소파 위에서 졸고 있는 중..."],[20,"배고프다고 눈치 주는 중 👀"],[0,"집에서 뒹굴거리는 중..."]];
 const emojis = [[80,"🐕"],[60,"🐶"],[40,"😴"],[20,"🥺"],[0,"🐶"]];
 function getMood() { for (const [t,m] of moods) if (state.love >= t) return m; return moods[4][1]; }
 function getEmoji() { for (const [t,e] of emojis) if (state.love >= t) return e; return "🐶"; }
 
-// ── 자동수입 타이머 애니메이션 ──────────────────────
+// ── 커스텀 이미지 ──────────────────────────────────
+let customDogImg = null;
+
+function handleImgUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    customDogImg = ev.target.result;
+    updateDogImage();
+    toast("🐶 옹심이 사진이 바뀌었어요!");
+    try { localStorage.setItem("ongsim_dog_img", customDogImg); } catch(err) {}
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateDogImage() {
+  const preview = document.getElementById("imgPreview");
+  const previewEmoji = document.getElementById("imgPreviewEmoji");
+  if (customDogImg) {
+    previewEmoji.style.display = "none";
+    let img = preview.querySelector("img");
+    if (!img) { img = document.createElement("img"); preview.appendChild(img); }
+    img.src = customDogImg;
+    // 메인 강아지 카드 이미지도 업데이트
+    const dogEmoji = document.getElementById("dogEmoji");
+    dogEmoji.innerHTML = `<img src="${customDogImg}" style="width:52px;height:52px;object-fit:cover;border-radius:50%;">`;
+  }
+}
+
+function getDogDisplay() {
+  if (customDogImg) return `<img src="${customDogImg}" style="width:48px;height:48px;object-fit:cover;border-radius:50%;">`;
+  return getEmoji();
+}
 let autoTimerStart = Date.now();
 function updateTimerBar() {
   const wrap = document.getElementById("blogTimerBarWrap");
@@ -204,7 +402,10 @@ function render() {
   document.getElementById("dogMood").textContent = getMood();
   document.getElementById("dogEmoji").textContent = getEmoji();
   document.getElementById("hospBtn").disabled = hosp < 10;
-  document.getElementById("earnAmt").textContent = 30 * multiplier();
+  const warn = document.getElementById("loveWarning");
+  warn.style.display = love <= 10 ? "block" : "none";
+  renderUpgrades();
+  document.getElementById("earnAmt").textContent = 10 * multiplier();
   document.getElementById("blogClickAmt").textContent = blogClickIncome();
   document.getElementById("blogAutoAmt").textContent = blogAutoIncome();
   document.getElementById("blogLvLabel").textContent = "Lv" + state.blogLv;
@@ -255,12 +456,13 @@ function gainLove(amt, label) {
   d.classList.remove("flash"); void d.offsetWidth; d.classList.add("flash");
   addLog(label); render(); saveGame();
 }
-function feed()  { if (spendMoney(50))  gainLove(15, "🍗 밥을 줬어요! 애정 +15"); }
-function walk()  { if (spendMoney(80))  gainLove(25, "🦮 산책했어요! 애정 +25"); }
-function toy()   { if (spendMoney(150)) gainLove(40, "🧸 장난감 샀어요! 애정 +40"); }
+function feed()  { if (spendMoney(50))  gainLove(1, "🍗 밥을 줬어요! 애정 +1"); }
+function walk()  { if (spendMoney(80))  gainLove(2, "🦮 산책했어요! 애정 +2"); }
+function toy()   { if (spendMoney(150)) gainLove(3, "🧸 장난감 샀어요! 애정 +3"); }
 function work() {
-  const earned = 30 * multiplier();
+  const earned = 10 * multiplier();
   state.money += earned;
+  runAutoUpgrades();
   addLog("💼 사료값 벌었어요! ₩" + earned);
   toast("₩" + earned + " 획득!");
   render(); saveGame();
@@ -297,23 +499,108 @@ function blogPost() {
   }
   render(); saveGame();
 }
+// ── 병원 애니메이션 ────────────────────────────────
+let hospAnimResult = null;
+
 function goHospital() {
   const chance = hospChance();
+  const success = Math.random() * 100 < chance;
+  hospAnimResult = { success, chance };
+  playHospAnim(success);
+}
+
+function playHospAnim(success) {
+  const overlay = document.getElementById("hospOverlay");
+  const dog = document.getElementById("hospDogAnim");
+  const status = document.getElementById("hospStatus");
+  const resultWrap = document.getElementById("hospResultWrap");
+  const distract = document.getElementById("hospDistract");
+  const dogEmoji = document.getElementById("hospDogEmoji");
+
+  // 강아지 이미지 설정
+  dog.innerHTML = customDogImg
+    ? `<img src="${customDogImg}" style="width:48px;height:48px;object-fit:cover;border-radius:50%;">`
+    : `<span style="font-size:40px;">🐶</span>`;
+
+  resultWrap.style.display = "none";
+  distract.style.opacity = "0";
+  distract.style.animation = "none";
+  dog.style.animation = "none";
+  dog.style.left = "5%";
+  dog.style.top = "auto";
+  dog.style.opacity = "1";
+  dog.style.transform = "scaleX(1)";
+  status.textContent = "옹심이가 병원으로 향하고 있어요...";
+  overlay.style.display = "flex";
+
+  if (success) {
+    // 성공 — 곧장 병원으로
+    dog.style.animation = "dogWalkSuccess 2s ease-in-out forwards, dogBounce 0.4s ease-in-out infinite";
+    status.textContent = "옹심이가 병원으로 향하고 있어요... 🏥";
+    setTimeout(() => {
+      dog.style.animation = "none";
+      dog.style.left = "78%";
+      status.textContent = "병원 도착! 치료를 받고 있어요 💉";
+    }, 2000);
+    setTimeout(() => showHospResult(true), 3200);
+  } else {
+    // 실패 — 중간에 유혹에 빠짐
+    const distracts = ["🦴","🐱","🍗","⚽","🐿️"];
+    const pick = distracts[Math.floor(Math.random() * distracts.length)];
+    dog.style.animation = "dogWalkFail 2.5s ease-in-out forwards, dogBounce 0.4s ease-in-out 0s 6";
+    setTimeout(() => {
+      distract.textContent = pick;
+      distract.style.animation = "distractAppear 0.4s ease forwards";
+      status.textContent = `앗! ${pick} 발견! 옹심이가 딴 길로 샜어요!`;
+    }, 1100);
+    setTimeout(() => showHospResult(false), 2800);
+  }
+}
+
+function showHospResult(success) {
+  const resultWrap = document.getElementById("hospResultWrap");
+  const resultIcon = document.getElementById("hospResultIcon");
+  const resultText = document.getElementById("hospResultText");
+  const closeBtn   = document.getElementById("hospCloseBtn");
+
+  if (success) {
+    resultIcon.textContent = "🎉";
+    resultText.textContent = "병원 성공! 환생 " + (state.rebirth + 1) + "회!";
+    resultText.style.color = "#0F6E56";
+    closeBtn.style.background = "#1D9E75";
+    closeBtn.style.color = "#fff";
+  } else {
+    resultIcon.textContent = "😤";
+    resultText.textContent = "옹심이가 도망쳤어요! 다시 도전해봐요";
+    resultText.style.color = "#C0392B";
+    closeBtn.style.background = "#D4537E";
+    closeBtn.style.color = "#fff";
+  }
+  resultWrap.style.display = "block";
+}
+
+function closeHospAnim() {
+  document.getElementById("hospOverlay").style.display = "none";
+  if (!hospAnimResult) return;
+  const { success, chance } = hospAnimResult;
+  hospAnimResult = null;
+
   state.visits++;
-  if (Math.random() * 100 < chance) {
+  if (success) {
     state.rebirth++;
+    state.rebirthPts++;
     state.love = 0;
     state.money = Math.round(state.money * multiplier());
-    // 환생 시 블로그 초기화
     state.blogLv = 1;
     state.blogPosts = 0;
     addLog("🎉 병원 성공! 환생 " + state.rebirth + "회 — 재화 x" + multiplier() + " 배율! 블로그 초기화", true);
     toast("🏥 병원 성공! ✨ 환생 " + state.rebirth + "회!");
-    document.getElementById("dogEmoji").textContent = "😇";
+    const dogEl = document.getElementById("dogEmoji");
+    if (!customDogImg) dogEl.textContent = "😇";
     setTimeout(() => render(), 500);
   } else {
-    state.love = Math.max(0, state.love - 20);
-    addLog("😤 옹심이가 도망쳤어요! (확률 " + chance + "% 실패) 애정 -20");
+    state.love = 0;
+    addLog("😤 옹심이가 도망쳤어요! (확률 " + chance + "% 실패) 애정도 0으로 초기화");
     toast("옹심이: 거기는 절대 안 가!");
   }
   render(); saveGame();
@@ -340,23 +627,86 @@ function spawnConfetti() {
   setTimeout(() => wrap.remove(), 3500);
 }
 
-// ── 자동수입 인터벌 ────────────────────────────────
+// ── 업그레이드 렌더 ────────────────────────────────
+function renderUpgrades() {
+  document.getElementById("rebirthPts").textContent = state.rebirthPts;
+  for (let i = 0; i < 3; i++) {
+    const card = document.getElementById("upg" + i);
+    const btn  = document.getElementById("upg" + i + "btn");
+    const tog  = document.getElementById("upg" + i + "toggle");
+    const chk  = document.getElementById("upg" + i + "chk");
+    const lbl  = document.getElementById("upg" + i + "lbl");
+    const cost = document.getElementById("upg" + i + "cost");
+    const owned = state.upgOwned[i];
+    const canAfford = state.rebirthPts >= UPGRADE_COSTS[i];
+    card.classList.toggle("locked", !owned);
+    card.classList.toggle("owned", owned);
+    if (owned) {
+      btn.style.display = "none";
+      tog.style.display = "flex";
+      chk.checked = state.upgOn[i];
+      lbl.textContent = state.upgOn[i] ? "ON" : "OFF";
+      lbl.style.color = state.upgOn[i] ? "#1D9E75" : "var(--color-text-tertiary)";
+      cost.textContent = "✅ 구매 완료";
+      cost.style.color = "#1D9E75";
+    } else {
+      btn.style.display = "block";
+      tog.style.display = "none";
+      btn.disabled = !canAfford;
+      cost.textContent = "포인트 " + UPGRADE_COSTS[i] + "개 필요";
+      cost.style.color = canAfford ? "#1D9E75" : "#534AB7";
+    }
+  }
+}
+function buyUpgrade(i) {
+  if (state.upgOwned[i] || state.rebirthPts < UPGRADE_COSTS[i]) return;
+  state.rebirthPts -= UPGRADE_COSTS[i];
+  state.upgOwned[i] = true;
+  state.upgOn[i] = true;
+  const names = ["자동 사료 배급기", "AI 로봇 산책 서비스", "AI 블로그 자동 글쓰기"];
+  addLog("🛒 " + names[i] + " 구매 완료!", true);
+  toast("✅ " + names[i] + " 활성화!");
+  renderUpgrades(); saveGame();
+}
+function toggleUpgrade(i) {
+  state.upgOn[i] = document.getElementById("upg" + i + "chk").checked;
+  renderUpgrades(); saveGame();
+}
+
+// ── 돈 획득 시 자동 업그레이드 실행 ──────────────
+function runAutoUpgrades() {
+  if (state.upgOwned[0] && state.upgOn[0]) { // 자동 사료
+    if (state.money >= 50) { state.money -= 50; state.love = Math.min(100, state.love + 1); }
+  }
+  if (state.upgOwned[1] && state.upgOn[1]) { // AI 산책
+    if (state.money >= 80) { state.money -= 80; state.love = Math.min(100, state.love + 2); }
+  }
+}
 setInterval(() => {
   const auto = blogAutoIncome();
   if (auto > 0) {
     state.money += auto;
+    runAutoUpgrades();
     autoTimerStart = Date.now();
-    // 자동수입 펄스 애니메이션
     const el = document.querySelector(".blog-auto");
     if (el) { el.classList.remove("blog-auto-pulse"); void el.offsetWidth; el.classList.add("blog-auto-pulse"); }
     render(); saveGame();
   }
 }, AUTO_INTERVAL);
 
+// AI 블로그 자동 글쓰기 — 1초마다
+setInterval(() => {
+  if (state.upgOwned[2] && state.upgOn[2]) { blogPost(); }
+}, 1000);
+
 setInterval(() => { state.love = Math.max(0, state.love - 0.8); render(); saveGame(); }, 3000);
 
 // ── 초기화 ─────────────────────────────────────────
 loadGame();
+try {
+  const savedImg = localStorage.getItem("ongsim_dog_img");
+  if (savedImg) { customDogImg = savedImg; updateDogImage(); }
+} catch(e) {}
 render();
 if (state.visits === 0 && state.money === 0) {
   addLog("💡 글 올리기를 클릭할수록 블로그 레벨이 올라가요!");
