@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>옹심이 병원가기</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 button, label { touch-action: manipulation; }
@@ -6,36 +12,33 @@ button, label { touch-action: manipulation; }
   padding: 16px;
   max-width: 480px;
   margin: 0 auto;
-  font-family: var(--font-sans);
-  background: var(--color-background-tertiary);
+  font-family: sans-serif;
+  background: #f5f5f5;
   min-height: 100vh;
 }
 
-/* ── 섹션 구분 ── */
 .section-title {
   font-size: 11px;
   font-weight: 500;
-  color: var(--color-text-tertiary);
+  color: #888;
   text-transform: uppercase;
   letter-spacing: 0.07em;
   margin: 20px 0 8px;
 }
 .section-title:first-child { margin-top: 0; }
 
-/* ── 카드 공통 ── */
 .card {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 16px;
   margin-bottom: 10px;
 }
 
-/* ── 강아지 헤더 카드 ── */
 .dog-card {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 16px;
   margin-bottom: 10px;
   display: flex;
@@ -44,8 +47,8 @@ button, label { touch-action: manipulation; }
 }
 .dog-emoji { font-size: 52px; line-height: 1; flex-shrink: 0; }
 .dog-info { flex: 1; }
-.dog-name { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
-.dog-mood { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; }
+.dog-name { font-size: 16px; font-weight: 500; color: #111; }
+.dog-mood { font-size: 13px; color: #555; margin-top: 3px; }
 .rebirth-badge {
   display: inline-block;
   background: #EEEDFE;
@@ -57,93 +60,73 @@ button, label { touch-action: manipulation; }
   margin-top: 5px;
 }
 .money-block { text-align: right; flex-shrink: 0; }
-.money-label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 2px; }
+.money-label { font-size: 11px; color: #888; margin-bottom: 2px; }
 .money-val { font-size: 20px; font-weight: 500; color: #0F6E56; }
-.multiplier-info { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.multiplier-info { font-size: 11px; color: #888; margin-top: 2px; }
 
-/* ── 애정도 바 ── */
 .bar-wrap {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 10px;
 }
-.bar-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px; }
-.bar-track { height: 8px; background: var(--color-background-tertiary); border-radius: 4px; overflow: hidden; }
+.bar-label { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 8px; }
+.bar-track { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
 .love-fill { background: #D4537E; }
 .blog-fill { background: #534AB7; }
 
-/* ── 경고 ── */
 .love-warning {
   background: #FAEEDA;
   border: 0.5px solid #EF9F7B;
-  border-radius: var(--border-radius-md);
+  border-radius: 8px;
   padding: 10px 14px;
   font-size: 12px;
   color: #633806;
   margin-bottom: 10px;
-  animation: fadeIn 0.3s;
 }
 
-/* ── 행동 버튼 그리드 ── */
 .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 .btn-grid.three { grid-template-columns: 1fr 1fr 1fr; }
 .act-btn {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-md);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 8px;
   padding: 12px 8px;
   cursor: pointer;
   font-size: 13px;
-  color: var(--color-text-primary);
+  color: #111;
   text-align: center;
   transition: background 0.15s, transform 0.1s;
 }
-.act-btn:hover { background: var(--color-background-secondary); }
+.act-btn:hover { background: #f5f5f5; }
 .act-btn:active { transform: scale(0.96); }
 .act-btn .btn-icon { font-size: 22px; display: block; margin-bottom: 5px; }
-.act-btn .btn-cost { font-size: 11px; color: var(--color-text-tertiary); margin-top: 3px; }
-.act-btn.earn {
-  background: #E1F5EE;
-  border-color: #9FE1CB;
-  color: #085041;
-}
+.act-btn .btn-cost { font-size: 11px; color: #888; margin-top: 3px; }
+.act-btn.earn { background: #E1F5EE; border-color: #9FE1CB; color: #085041; }
 .act-btn.earn:hover { background: #c8eedd; }
-.act-btn.blog-btn {
-  background: #EEEDFE;
-  border-color: #AFA9EC;
-  color: #26215C;
-}
+.act-btn.blog-btn { background: #EEEDFE; border-color: #AFA9EC; color: #26215C; }
 .act-btn.blog-btn:hover { background: #dddcf8; }
 
-/* ── 블로그 카드 ── */
 .blog-card {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 16px;
   margin-bottom: 10px;
 }
 .blog-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.blog-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-.blog-auto {
-  font-size: 12px;
-  color: #0F6E56;
-  font-weight: 500;
-  background: #E1F5EE;
-  padding: 3px 8px;
-  border-radius: 99px;
-}
-.blog-progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; }
-.blog-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 8px; }
-.blog-timer-bar { height: 2px; background: var(--color-background-tertiary); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+.blog-title { font-size: 13px; font-weight: 500; color: #111; }
+.blog-auto { font-size: 12px; color: #0F6E56; font-weight: 500; background: #E1F5EE; padding: 3px 8px; border-radius: 99px; }
+.blog-progress-label { display: flex; justify-content: space-between; font-size: 11px; color: #555; margin-bottom: 6px; }
+.blog-sub { font-size: 11px; color: #888; margin-top: 8px; }
+.blog-timer-bar { height: 2px; background: #f0f0f0; border-radius: 2px; overflow: hidden; margin-top: 8px; }
 .blog-timer-fill { height: 100%; background: #534AB7; border-radius: 2px; transition: width 0.1s linear; }
 .power-blogger-banner {
   background: #EEEDFE;
   color: #26215C;
-  border-radius: var(--border-radius-md);
+  border-radius: 8px;
   padding: 10px 14px;
   margin-top: 10px;
   font-size: 13px;
@@ -155,14 +138,13 @@ button, label { touch-action: manipulation; }
 }
 .power-blogger-banner.show { display: block; }
 
-/* ── 병원 버튼 ── */
 .hosp-btn {
   width: 100%;
   padding: 15px;
   background: #D4537E;
   color: #FBEAF0;
   border: none;
-  border-radius: var(--border-radius-lg);
+  border-radius: 12px;
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
@@ -172,18 +154,12 @@ button, label { touch-action: manipulation; }
 .hosp-btn:hover { opacity: 0.88; }
 .hosp-btn:active { transform: scale(0.98); }
 .hosp-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-.hosp-hint {
-  font-size: 11px;
-  color: var(--color-text-tertiary);
-  text-align: center;
-  margin-bottom: 16px;
-}
+.hosp-hint { font-size: 11px; color: #888; text-align: center; margin-bottom: 16px; }
 
-/* ── 업그레이드 ── */
 .upgrade-card {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-md);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 8px;
   padding: 14px;
   margin-bottom: 8px;
   display: flex;
@@ -195,15 +171,15 @@ button, label { touch-action: manipulation; }
 .upgrade-card.owned { border-color: #5DCAA5; background: #f5fcf9; }
 .upgrade-icon { font-size: 26px; flex-shrink: 0; }
 .upgrade-info { flex: 1; min-width: 0; }
-.upgrade-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-.upgrade-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.upgrade-name { font-size: 13px; font-weight: 500; color: #111; }
+.upgrade-desc { font-size: 11px; color: #888; margin-top: 2px; }
 .upgrade-cost { font-size: 11px; color: #534AB7; font-weight: 500; margin-top: 3px; }
 .upgrade-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
 .buy-btn {
   background: #534AB7;
   color: #EEEDFE;
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: 8px;
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 500;
@@ -213,30 +189,21 @@ button, label { touch-action: manipulation; }
 }
 .buy-btn:hover { opacity: 0.85; }
 .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.rebirth-pts {
-  font-size: 12px;
-  font-weight: 500;
-  color: #3C3489;
-  background: #EEEDFE;
-  padding: 3px 10px;
-  border-radius: 99px;
-}
+.rebirth-pts { font-size: 12px; font-weight: 500; color: #3C3489; background: #EEEDFE; padding: 3px 10px; border-radius: 99px; }
 
-/* ── 토글 ── */
 .toggle-wrap { display: flex; align-items: center; gap: 6px; }
-.toggle-label { font-size: 11px; color: var(--color-text-tertiary); }
+.toggle-label { font-size: 11px; color: #888; }
 .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
 .toggle input { opacity: 0; width: 0; height: 0; }
-.toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--color-background-tertiary); border-radius: 20px; transition: 0.2s; border: 0.5px solid var(--color-border-secondary); }
+.toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #e0e0e0; border-radius: 20px; transition: 0.2s; border: 0.5px solid #ccc; }
 .toggle-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background: white; border-radius: 50%; transition: 0.2s; }
 input:checked + .toggle-slider { background: #1D9E75; border-color: #1D9E75; }
 input:checked + .toggle-slider:before { transform: translateX(16px); }
 
-/* ── 기록 ── */
 .visit-stat {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 10px;
   display: flex;
@@ -244,24 +211,23 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
   gap: 14px;
 }
 .visit-icon { font-size: 28px; flex-shrink: 0; }
-.visit-stat-val { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
-.visit-stat-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.visit-stat-val { font-size: 18px; font-weight: 500; color: #111; }
+.visit-stat-desc { font-size: 11px; color: #888; margin-top: 2px; }
 .log-box {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 12px 16px;
   font-size: 12px;
-  color: var(--color-text-secondary);
+  color: #555;
   line-height: 1.9;
   min-height: 64px;
 }
 
-/* ── 이미지 업로드 ── */
 .img-upload-wrap {
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-tertiary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 10px;
   display: flex;
@@ -270,47 +236,45 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
 }
 .img-preview {
   width: 44px; height: 44px; border-radius: 50%;
-  border: 1.5px solid var(--color-border-secondary);
-  background: var(--color-background-tertiary);
+  border: 1.5px solid #ccc;
+  background: #f0f0f0;
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; flex-shrink: 0; overflow: hidden;
 }
 .img-preview img { width: 100%; height: 100%; object-fit: cover; }
 .img-upload-info { flex: 1; }
-.img-upload-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-.img-upload-desc { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+.img-upload-title { font-size: 13px; font-weight: 500; color: #111; }
+.img-upload-desc { font-size: 11px; color: #888; margin-top: 2px; }
 .img-upload-btn {
-  background: var(--color-background-secondary);
-  border: 0.5px solid var(--color-border-secondary);
-  border-radius: var(--border-radius-md);
+  background: #f0f0f0;
+  border: 0.5px solid #ccc;
+  border-radius: 8px;
   padding: 7px 14px;
   font-size: 12px;
   cursor: pointer;
-  color: var(--color-text-primary);
+  color: #111;
   white-space: nowrap;
 }
-.img-upload-btn:hover { background: var(--color-background-tertiary); }
+.img-upload-btn:hover { background: #e5e5e5; }
 
-/* ── 토스트 ── */
 .toast {
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-  background: var(--color-background-primary);
-  border: 0.5px solid var(--color-border-secondary);
-  border-radius: var(--border-radius-lg);
+  background: #fff;
+  border: 0.5px solid #ccc;
+  border-radius: 12px;
   padding: 10px 18px;
-  font-size: 13px; font-weight: 500; color: var(--color-text-primary);
+  font-size: 13px; font-weight: 500; color: #111;
   z-index: 99; opacity: 0; transition: opacity 0.25s; pointer-events: none;
   white-space: nowrap;
 }
 .toast.show { opacity: 1; }
 
-/* ── 애니메이션 ── */
 .log-entry { animation: fadeIn 0.3s; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);} }
 .flash { animation: flash 0.4s; }
 @keyframes flash { 0%,100%{transform:scale(1);}50%{transform:scale(1.1);} }
 .lv-up-flash { animation: lvFlash 0.5s; }
-@keyframes lvFlash { 0%{background:#EEEDFE;}100%{background:var(--color-background-primary);} }
+@keyframes lvFlash { 0%{background:#EEEDFE;}100%{background:#fff;} }
 .blog-auto-pulse { animation: autoPulse 0.6s; }
 @keyframes autoPulse { 0%{transform:scale(1);}40%{transform:scale(1.15);}100%{transform:scale(1);} }
 @keyframes bannerPop { 0%{opacity:0;transform:scale(0.8);}60%{transform:scale(1.04);}100%{opacity:1;transform:scale(1);} }
@@ -318,29 +282,46 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
 .confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confettiFall 2s ease-in forwards; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;} }
 
-/* ── 병원 오버레이 ── */
-.hosp-overlay { position: fixed; inset: 0; background: #E8F5E9; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-.hosp-scene { position: relative; width: 100%; height: 180px; }
-.hosp-road { position: absolute; bottom: 30px; left: 0; right: 0; height: 24px; background: #B0BEC5; border-radius: 4px; }
+/* ── 병원 오버레이 (핵심 수정) ── */
+.hosp-overlay {
+  position: fixed; inset: 0;
+  background: #E8F5E9;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 24px 16px;
+}
+.hosp-scene {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 260px;
+  flex-shrink: 0;
+}
+.hosp-road { position: absolute; bottom: 40px; left: 0; right: 0; height: 24px; background: #B0BEC5; border-radius: 4px; }
 .hosp-road::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: repeating-linear-gradient(90deg,#fff 0,#fff 20px,transparent 20px,transparent 40px); transform: translateY(-50%); }
-.hosp-building { position: absolute; bottom: 54px; font-size: 52px; line-height: 1; }
+.hosp-building { position: absolute; bottom: 64px; font-size: 64px; line-height: 1; }
 .hosp-building.left { left: 8px; }
 .hosp-building.right { right: 8px; }
-.hosp-dog { position: absolute; bottom: 54px; font-size: 40px; line-height: 1; transition: none; }
-.hosp-status { font-size: 15px; font-weight: 500; color: #333; margin-top: 16px; text-align: center; padding: 0 24px; }
-.hosp-distract { position: absolute; bottom: 54px; font-size: 32px; opacity: 0; pointer-events: none; }
-@keyframes dogWalkSuccess { 0%{left:5%;}100%{left:78%;} }
+.hosp-dog { position: absolute; bottom: 64px; font-size: 40px; line-height: 1; transition: none; }
+.hosp-status { font-size: 15px; font-weight: 500; color: #333; margin-top: 16px; text-align: center; padding: 0 24px; max-width: 480px; width: 100%; }
+.hosp-distract { position: absolute; bottom: 64px; font-size: 32px; opacity: 0; pointer-events: none; }
+
+@keyframes dogWalkSuccess { 0%{left:5%;}100%{left:70%;} }
 @keyframes dogWalkFail { 0%{left:5%;transform:scaleX(1);}45%{left:40%;transform:scaleX(1);}55%{left:40%;transform:scaleX(1);}100%{left:5%;top:-60px;transform:scaleX(-1) rotate(-30deg);opacity:0;} }
-@keyframes dogBounce { 0%,100%{bottom:54px;}50%{bottom:64px;} }
-@keyframes distractAppear { 0%{opacity:0;left:55%;bottom:54px;transform:scale(0.5);}30%{opacity:1;left:55%;bottom:54px;transform:scale(1.2);}100%{opacity:1;left:55%;bottom:54px;transform:scale(1);} }
+@keyframes dogBounce { 0%,100%{bottom:64px;}50%{bottom:76px;} }
+@keyframes distractAppear { 0%{opacity:0;left:55%;bottom:64px;transform:scale(0.5);}30%{opacity:1;left:55%;bottom:64px;transform:scale(1.2);}100%{opacity:1;left:55%;bottom:64px;transform:scale(1);} }
 @keyframes resultPop { 0%{opacity:0;transform:scale(0.6);}60%{transform:scale(1.1);}100%{opacity:1;transform:scale(1);} }
+
 .hosp-result { font-size: 52px; animation: resultPop 0.5s ease forwards; margin-top: 12px; }
 .hosp-result-text { font-size: 17px; font-weight: 500; margin-top: 8px; text-align: center; }
 .hosp-close-btn { margin-top: 20px; padding: 11px 36px; border: none; border-radius: 99px; font-size: 14px; font-weight: 500; cursor: pointer; }
 </style>
 
 <div id="game">
-  <h2 class="sr-only">옹심이 병원가기 — 방치형 게임</h2>
   <div id="toast" class="toast"></div>
 
   <div class="dog-card">
@@ -471,7 +452,7 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
     <div>
       <div style="display:flex;align-items:baseline;gap:6px;">
         <div class="visit-stat-val" id="visitVal">0번</div>
-        <div style="font-size:11px;color:var(--color-text-secondary);">총 병원 방문</div>
+        <div style="font-size:11px;color:#555;">총 병원 방문</div>
       </div>
       <div class="visit-stat-desc" id="visitDesc">병원 방문 횟수만큼 돈 배율 증가 (현재 x1)</div>
     </div>
@@ -516,33 +497,26 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
 const SAVE_KEY = "ongsim_v10";
 const BLOG_MAX_LV = 8;
 const AUTO_INTERVAL = 5000;
-
 const UPGRADE_COSTS = [3, 5, 7];
 const defaultState = { money: 0, love: 0, rebirth: 0, visits: 0, blogLv: 1, blogPosts: 0, rebirthPts: 0, upgOwned: [false, false, false], upgOn: [false, false, false] };
 let state = Object.assign({}, defaultState);
 
-// ── 저장/불러오기 ──────────────────────────────────
-function saveGame() {
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {}
-}
+function saveGame() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {} }
 function loadGame() {
   try {
     const saved = localStorage.getItem(SAVE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       state = Object.assign({}, defaultState, parsed);
-      // 배열은 별도로 복원
       state.upgOwned = Array.isArray(parsed.upgOwned) ? parsed.upgOwned : [false, false, false];
       state.upgOn    = Array.isArray(parsed.upgOn)    ? parsed.upgOn    : [false, false, false];
     }
   } catch(e) {}
 }
 
-// ── 계산 함수 ──────────────────────────────────────
 function blogPostsNeeded(lv) { return lv * 10; }
 function multiplier() { return state.rebirth + 1; }
 function isPowerBlogger() { return state.blogLv >= BLOG_MAX_LV; }
-// 파워블로거 달성 시 자동수입 10배
 function blogAutoIncome() {
   if (isPowerBlogger()) return (BLOG_MAX_LV - 1) * 5 * multiplier() * 10;
   return (state.blogLv - 1) * 5 * multiplier();
@@ -555,9 +529,7 @@ const emojis = [[80,"🐕"],[60,"🐶"],[40,"😴"],[20,"🥺"],[0,"🐶"]];
 function getMood() { for (const [t,m] of moods) if (state.love >= t) return m; return moods[4][1]; }
 function getEmoji() { for (const [t,e] of emojis) if (state.love >= t) return e; return "🐶"; }
 
-// ── 커스텀 이미지 ──────────────────────────────────
 let customDogImg = null;
-
 function handleImgUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -570,7 +542,6 @@ function handleImgUpload(e) {
   };
   reader.readAsDataURL(file);
 }
-
 function updateDogImage() {
   const preview = document.getElementById("imgPreview");
   const previewEmoji = document.getElementById("imgPreviewEmoji");
@@ -579,11 +550,11 @@ function updateDogImage() {
     let img = preview.querySelector("img");
     if (!img) { img = document.createElement("img"); preview.appendChild(img); }
     img.src = customDogImg;
-    // 메인 강아지 카드 이미지도 업데이트
     const dogEmoji = document.getElementById("dogEmoji");
     dogEmoji.innerHTML = `<img src="${customDogImg}" style="width:52px;height:52px;object-fit:cover;border-radius:50%;">`;
   }
 }
+
 let autoTimerStart = Date.now();
 function updateTimerBar() {
   const wrap = document.getElementById("blogTimerBarWrap");
@@ -596,7 +567,6 @@ function updateTimerBar() {
 }
 setInterval(updateTimerBar, 100);
 
-// ── 렌더 ───────────────────────────────────────────
 function render() {
   const love = Math.min(100, Math.round(state.love));
   const hosp = hospChance();
@@ -619,7 +589,6 @@ function render() {
   document.getElementById("blogLvLabel").textContent = "Lv" + state.blogLv;
   const b = document.getElementById("rebirthBadge");
   b.innerHTML = state.rebirth > 0 ? `<span class="rebirth-badge">✨ 환생 ${state.rebirth}회</span>` : "";
-
   const banner = document.getElementById("powerBloggerBanner");
   if (isPowerBlogger()) {
     banner.classList.add("show");
@@ -627,7 +596,6 @@ function render() {
     document.getElementById("blogBar").style.width = "100%";
     document.getElementById("blogSub").textContent = "자동 +₩" + blogAutoIncome() + "/5초 (10배 보너스!)";
   } else {
-    // [버그수정 1] 환생 후 파워블로거 배너가 사라지지 않는 문제 수정
     banner.classList.remove("show");
     banner.style.display = "none";
     const needed = blogPostsNeeded(state.blogLv);
@@ -638,7 +606,6 @@ function render() {
   }
 }
 
-// ── 로그 / 토스트 ──────────────────────────────────
 function addLog(msg, important) {
   const box = document.getElementById("logBox");
   const el = document.createElement("div");
@@ -655,7 +622,6 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("show"), 1800);
 }
 
-// ── 행동 ───────────────────────────────────────────
 function spendMoney(cost) {
   if (state.money < cost) { toast("사료값이 부족해요 💸"); return false; }
   state.money -= cost; return true;
@@ -689,7 +655,6 @@ function blogPost() {
       const card = document.getElementById("blogCard");
       card.classList.remove("lv-up-flash"); void card.offsetWidth; card.classList.add("lv-up-flash");
       if (isPowerBlogger()) {
-        // 파워블로거 달성!
         addLog("🏆 파워블로거 등극!! 자동수입 10배 달성!", true);
         toast("🏆 파워블로거 달성!!!");
         spawnConfetti();
@@ -710,9 +675,8 @@ function blogPost() {
   }
   render(); saveGame();
 }
-// ── 병원 애니메이션 ────────────────────────────────
-let hospAnimResult = null;
 
+let hospAnimResult = null;
 function goHospital() {
   if (hospAnimResult) return;
   document.getElementById("hospBtn").disabled = true;
@@ -729,9 +693,8 @@ function playHospAnim(success) {
   const resultWrap = document.getElementById("hospResultWrap");
   const distract = document.getElementById("hospDistract");
 
-  // 강아지 이미지 설정
   dog.innerHTML = customDogImg
-    ? `<img src="${customDogImg}" style="width:144px;height:144px;object-fit:cover;border-radius:50%;">`
+    ? `<img src="${customDogImg}" style="width:48px;height:48px;object-fit:cover;border-radius:50%;">`
     : `<span style="font-size:40px;">🐶</span>`;
 
   resultWrap.style.display = "none";
@@ -746,17 +709,15 @@ function playHospAnim(success) {
   overlay.style.display = "flex";
 
   if (success) {
-    // 성공 — 곧장 병원으로
     dog.style.animation = "dogWalkSuccess 2s ease-in-out forwards, dogBounce 0.4s ease-in-out infinite";
     status.textContent = "옹심이가 병원으로 향하고 있어요... 🏥";
     setTimeout(() => {
       dog.style.animation = "none";
-      dog.style.left = "78%";
+      dog.style.left = "70%";
       status.textContent = "병원 도착! 치료를 받고 있어요 💉";
     }, 2000);
     setTimeout(() => showHospResult(true), 3200);
   } else {
-    // 실패 — 중간에 유혹에 빠짐
     const distracts = ["🦴","🐱","🍗","⚽","🐿️"];
     const pick = distracts[Math.floor(Math.random() * distracts.length)];
     dog.style.animation = "dogWalkFail 2.5s ease-in-out forwards, dogBounce 0.4s ease-in-out 0s 6";
@@ -774,7 +735,6 @@ function showHospResult(success) {
   const resultIcon = document.getElementById("hospResultIcon");
   const resultText = document.getElementById("hospResultText");
   const closeBtn   = document.getElementById("hospCloseBtn");
-
   if (success) {
     resultIcon.textContent = "🎉";
     resultText.textContent = "병원 성공! 환생 " + (state.rebirth + 1) + "회!";
@@ -796,7 +756,6 @@ function closeHospAnim() {
   if (!hospAnimResult) return;
   const { success, chance } = hospAnimResult;
   hospAnimResult = null;
-
   state.visits++;
   if (success) {
     state.rebirth++;
@@ -817,7 +776,6 @@ function closeHospAnim() {
   render(); saveGame();
 }
 
-// ── 파워블로거 달성 시 콘페티 ──────────────────────
 function spawnConfetti() {
   const wrap = document.createElement("div");
   wrap.className = "confetti-wrap";
@@ -838,7 +796,6 @@ function spawnConfetti() {
   setTimeout(() => wrap.remove(), 3500);
 }
 
-// ── 업그레이드 렌더 ────────────────────────────────
 function renderUpgrades() {
   document.getElementById("rebirthPts").textContent = state.rebirthPts;
   for (let i = 0; i < 3; i++) {
@@ -857,7 +814,7 @@ function renderUpgrades() {
       tog.style.display = "flex";
       chk.checked = state.upgOn[i];
       lbl.textContent = state.upgOn[i] ? "ON" : "OFF";
-      lbl.style.color = state.upgOn[i] ? "#1D9E75" : "var(--color-text-tertiary)";
+      lbl.style.color = state.upgOn[i] ? "#1D9E75" : "#888";
       cost.textContent = "✅ 구매 완료";
       cost.style.color = "#1D9E75";
     } else {
@@ -884,10 +841,8 @@ function toggleUpgrade(i) {
   renderUpgrades(); saveGame();
 }
 
-// ── 돈 획득 시 자동 업그레이드 실행 ──────────────
 function runAutoUpgrades() {
-  let cost = 0;
-  let loveGain = 0;
+  let cost = 0; let loveGain = 0;
   if (state.upgOwned[0] && state.upgOn[0]) { cost += 50; loveGain += 1; }
   if (state.upgOwned[1] && state.upgOn[1]) { cost += 80; loveGain += 2; }
   if (cost > 0 && state.money >= cost) {
@@ -895,6 +850,7 @@ function runAutoUpgrades() {
     state.love = Math.min(100, state.love + loveGain);
   }
 }
+
 setInterval(() => {
   const auto = blogAutoIncome();
   if (auto > 0) {
@@ -907,12 +863,10 @@ setInterval(() => {
   }
 }, AUTO_INTERVAL);
 
-// AI 블로그 자동 글쓰기 — 1초마다 (토스트/로그 없이 조용히 실행)
 setInterval(() => {
   if (!state.upgOwned[2] || !state.upgOn[2]) return;
   const earned = blogClickIncome();
   state.money += earned;
-  // [버그수정 2] AI 자동 글쓰기 인터벌에서 runAutoUpgrades() 누락 수정
   runAutoUpgrades();
   if (!isPowerBlogger()) {
     state.blogPosts++;
@@ -940,7 +894,6 @@ setInterval(() => {
 
 setInterval(() => { state.love = Math.max(0, state.love - 0.8); render(); saveGame(); }, 3000);
 
-// ── 초기화 ─────────────────────────────────────────
 loadGame();
 try {
   const savedImg = localStorage.getItem("ongsim_dog_img");
@@ -953,3 +906,5 @@ if (state.visits === 0 && state.money === 0) {
   addLog("💾 저장된 게임을 불러왔어요!");
 }
 </script>
+</body>
+</html>
