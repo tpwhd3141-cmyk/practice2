@@ -848,8 +848,19 @@ function runAutoUpgrades() {
   if (cost > 0 && state.money >= cost) {
     state.money -= cost;
     state.love = Math.min(100, state.love + loveGain);
+    return true;
   }
+  return false;
 }
+
+// 2초마다 남은 돈으로도 자동 업그레이드 실행
+setInterval(() => {
+  const anyOn = (state.upgOwned[0] && state.upgOn[0]) || (state.upgOwned[1] && state.upgOn[1]);
+  if (!anyOn) return;
+  let changed = false;
+  while (runAutoUpgrades()) { changed = true; }
+  if (changed) { render(); saveGame(); }
+}, 2000);
 
 setInterval(() => {
   const auto = blogAutoIncome();
