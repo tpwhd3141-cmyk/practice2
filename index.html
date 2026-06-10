@@ -58,16 +58,6 @@ button, label { touch-action: manipulation; }
 .dog-info { flex: 1; }
 .dog-name { font-size: 16px; font-weight: 500; color: #111; }
 .dog-mood { font-size: 13px; color: #555; margin-top: 3px; }
-.rebirth-badge {
-  display: inline-block;
-  background: #EEEDFE;
-  color: #3C3489;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 2px 8px;
-  border-radius: 99px;
-  margin-top: 5px;
-}
 .money-block { text-align: right; flex-shrink: 0; }
 .money-label { font-size: 11px; color: #888; margin-bottom: 2px; }
 .money-val { font-size: 20px; font-weight: 500; color: #0F6E56; }
@@ -339,7 +329,6 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
     <div class="dog-info">
       <div class="dog-name">옹심이</div>
       <div class="dog-mood" id="dogMood">집에서 뒹굴거리는 중...</div>
-      <div id="rebirthBadge"></div>
     </div>
     <div class="money-block">
       <div class="money-label">사료값</div>
@@ -401,7 +390,7 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
   <button class="hosp-btn" id="hospBtn" onclick="goHospital()" disabled>
     🏥 병원 데려가기 (확률: <span id="hospBtnPct">0%</span>)
   </button>
-  <div class="hosp-hint">확률 = 애정도 × 0.5 + 환생횟수 (최대 100%)</div>
+  <div class="hosp-hint">확률 = 애정도 × 0.5 + 병원 방문 횟수 (최대 100%)</div>
 
   <div class="section-title" style="display:flex;justify-content:space-between;align-items:center;">
     <span>✨ 영구 업그레이드</span>
@@ -600,7 +589,7 @@ function render() {
   document.getElementById("lovePct").textContent = love + "%";
   document.getElementById("hospBtnPct").textContent = hosp + "%";
   document.getElementById("moneyVal").textContent = "₩" + state.money.toLocaleString();
-  document.getElementById("multiplierInfo").textContent = "x" + multiplier() + " 배율";
+  document.getElementById("multiplierInfo").textContent = "🏥 " + state.visits + "회 방문 · x" + multiplier() + " 배율";
   document.getElementById("visitVal").textContent = state.visits + "번";
   document.getElementById("visitDesc").textContent = "병원 방문 횟수만큼 돈 배율 증가 (현재 x" + multiplier() + ")";
   document.getElementById("dogMood").textContent = getMood();
@@ -613,8 +602,6 @@ function render() {
   document.getElementById("blogClickAmt").textContent = blogClickIncome();
   document.getElementById("blogAutoAmt").textContent = blogAutoIncome();
   document.getElementById("blogLvLabel").textContent = "Lv" + state.blogLv;
-  const b = document.getElementById("rebirthBadge");
-  b.innerHTML = state.rebirth > 0 ? `<span class="rebirth-badge">✨ 환생 ${state.rebirth}회</span>` : "";
   const banner = document.getElementById("powerBloggerBanner");
   if (isPowerBlogger()) {
     banner.classList.add("show");
@@ -763,7 +750,7 @@ function showHospResult(success) {
   const closeBtn   = document.getElementById("hospCloseBtn");
   if (success) {
     resultIcon.textContent = "🎉";
-    resultText.textContent = "병원 성공! 환생 " + (state.rebirth + 1) + "회!";
+    resultText.textContent = "병원 성공! " + (state.visits + 1) + "번째 방문!";
     resultText.style.color = "#0F6E56";
     closeBtn.style.background = "#1D9E75";
     closeBtn.style.color = "#fff";
@@ -790,8 +777,8 @@ function closeHospAnim() {
     state.money = 0;
     state.blogLv = 1;
     state.blogPosts = 0;
-    addLog("🎉 병원 성공! 환생 " + state.rebirth + "회 — x" + multiplier() + " 배율 적용! 돈·블로그 초기화", true);
-    toast("🏥 병원 성공! ✨ 환생 " + state.rebirth + "회!");
+    addLog("🎉 병원 성공! " + state.visits + "번째 방문 — x" + multiplier() + " 배율 적용! 돈·블로그 초기화", true);
+    toast("🏥 " + state.visits + "번째 병원 방문 성공!");
     const dogEl = document.getElementById("dogEmoji");
     if (!customDogImg) dogEl.textContent = "😇";
   } else {
