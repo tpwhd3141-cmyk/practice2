@@ -319,6 +319,35 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
 .hosp-result { font-size: 52px; animation: resultPop 0.5s ease forwards; margin-top: 12px; }
 .hosp-result-text { font-size: 17px; font-weight: 500; margin-top: 8px; text-align: center; }
 .hosp-close-btn { margin-top: 20px; padding: 11px 36px; border: none; border-radius: 99px; font-size: 14px; font-weight: 500; cursor: pointer; }
+
+.speech-bubble {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid #D4537E;
+  border-radius: 16px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.4s;
+  z-index: 10;
+  pointer-events: none;
+}
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #D4537E;
+}
+.speech-bubble.show { opacity: 1; }
 </style>
 
 <div id="game">
@@ -499,6 +528,7 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
     <div class="hosp-building right">🏥</div>
     <div class="hosp-distract" id="hospDistract"></div>
     <div class="hosp-dog" id="hospDogAnim"><span id="hospDogEmoji">🐶</span></div>
+    <div class="speech-bubble" id="speechBubble"></div>
   </div>
   <div class="hosp-status" id="hospStatus">옹심이가 병원으로 향하고 있어요...</div>
   <div id="hospResultWrap" style="display:none; text-align:center;">
@@ -506,6 +536,19 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
     <div class="hosp-result-text" id="hospResultText"></div>
     <button class="hosp-close-btn" id="hospCloseBtn" onclick="closeHospAnim()">확인</button>
   </div>
+</div>
+
+<!-- 엔딩 오버레이 -->
+<div id="endingOverlay" style="display:none; position:fixed; inset:0; background:#fff; z-index:300; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px; text-align:center; overflow-y:auto;">
+  <div style="font-size:72px; margin-bottom:16px;" id="endingEmoji">🐶</div>
+  <div style="font-size:22px; font-weight:500; color:#111; margin-bottom:12px;">옹심이가 건강해졌어요!</div>
+  <div style="font-size:15px; color:#555; line-height:1.8; margin-bottom:24px;">
+    수많은 도전 끝에 드디어 옹심이가<br>병원 치료를 마쳤어요 🎉<br><br>
+    <span style="font-size:13px; color:#888;" id="endingStats"></span>
+  </div>
+  <div style="font-size:48px; margin-bottom:8px;">🏆</div>
+  <div style="font-size:16px; font-weight:500; color:#534AB7; margin-bottom:32px;">TRUE ENDING</div>
+  <button onclick="closeEnding()" style="padding:14px 40px; background:#D4537E; color:#fff; border:none; border-radius:99px; font-size:15px; font-weight:500; cursor:pointer;">다시 시작하기</button>
 </div>
 
 <script>
@@ -694,9 +737,106 @@ function goHospital() {
   if (hospAnimResult) return;
   document.getElementById("hospBtn").disabled = true;
   const chance = hospChance();
+  // 100% 확률이면 특별 엔딩 애니메이션
+  if (chance >= 100) {
+    hospAnimResult = { success: true, chance, isEnding: true };
+    playEndingAnim();
+    return;
+  }
   const success = Math.random() * 100 < chance;
   hospAnimResult = { success, chance };
   playHospAnim(success);
+}
+
+function playEndingAnim() {
+  const overlay = document.getElementById("hospOverlay");
+  const dog = document.getElementById("hospDogAnim");
+  const status = document.getElementById("hospStatus");
+  const resultWrap = document.getElementById("hospResultWrap");
+  const distract = document.getElementById("hospDistract");
+  const bubble = document.getElementById("speechBubble");
+
+  dog.innerHTML = customDogImg
+    ? `<img src="${customDogImg}" style="width:48px;height:48px;object-fit:cover;border-radius:50%;">`
+    : `<span style="font-size:40px;">🐶</span>`;
+
+  resultWrap.style.display = "none";
+  distract.style.opacity = "0";
+  distract.style.animation = "none";
+  dog.style.animation = "none";
+  dog.style.left = "5%";
+  dog.style.top = "auto";
+  dog.style.opacity = "1";
+  dog.style.transform = "scaleX(1)";
+  bubble.classList.remove("show");
+  overlay.style.display = "flex";
+
+  const messages = [
+    "병원 다녀오겠습니다! 🐾",
+    "이젠 나 혼자도 갈 수 있어!",
+    "무섭지 않아... 조금은 😤",
+    "다 왔다! 병원이다! 🏥"
+  ];
+  const times = [0, 800, 1600, 2400];
+
+  status.textContent = "옹심이가 씩씩하게 걸어가고 있어요...";
+  dog.style.animation = "dogWalkSuccess 3s ease-in-out forwards, dogBounce 0.4s ease-in-out infinite";
+
+  times.forEach((t, i) => {
+    setTimeout(() => {
+      bubble.textContent = messages[i];
+      bubble.classList.add("show");
+      // 말풍선 위치를 강아지 따라가도록
+      const pct = (t / 3000);
+      const leftPct = 5 + pct * 65;
+      bubble.style.left = Math.min(leftPct + 5, 75) + "%";
+      bubble.style.transform = "translateX(-50%)";
+    }, t);
+    if (i < times.length - 1) {
+      setTimeout(() => bubble.classList.remove("show"), t + 700);
+    }
+  });
+
+  setTimeout(() => {
+    dog.style.animation = "none";
+    dog.style.left = "70%";
+    status.textContent = "병원 도착! 드디어 해냈어요! 🎉";
+    bubble.textContent = "해냈다!! 🎉";
+    bubble.style.left = "75%";
+    bubble.classList.add("show");
+  }, 3000);
+
+  setTimeout(() => {
+    bubble.classList.remove("show");
+    overlay.style.display = "none";
+    showEnding();
+  }, 4500);
+}
+
+function showEnding() {
+  const overlay = document.getElementById("endingOverlay");
+  overlay.style.display = "flex";
+  const emoji = document.getElementById("endingEmoji");
+  if (customDogImg) {
+    emoji.innerHTML = `<img src="${customDogImg}" style="width:120px;height:120px;object-fit:cover;border-radius:50%;border:4px solid #D4537E;">`;
+  } else {
+    emoji.textContent = "🐶";
+  }
+  document.getElementById("endingStats").textContent =
+    "총 병원 방문 " + state.visits + "회 · 최고 배율 x" + multiplier();
+  spawnConfetti();
+  setTimeout(spawnConfetti, 800);
+}
+
+function closeEnding() {
+  document.getElementById("endingOverlay").style.display = "none";
+  // 상태 완전 초기화
+  state = Object.assign({}, defaultState);
+  state.upgOwned = [false, false, false, false];
+  state.upgOn = [false, false, false, false];
+  document.getElementById("hospBtn").disabled = false;
+  render(); saveGame();
+  addLog("🌟 새 게임 시작! 옹심이를 다시 돌봐주세요 🐾", true);
 }
 
 function playHospAnim(success) {
