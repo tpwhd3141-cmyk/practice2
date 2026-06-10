@@ -420,7 +420,9 @@ function render() {
     document.getElementById("blogBar").style.width = "100%";
     document.getElementById("blogSub").textContent = "자동 +₩" + blogAutoIncome() + "/5초 (10배 보너스!)";
   } else {
+    // [버그수정 1] 환생 후 파워블로거 배너가 사라지지 않는 문제 수정
     banner.classList.remove("show");
+    banner.style.display = "none";
     const needed = blogPostsNeeded(state.blogLv);
     const progress = Math.min(state.blogPosts, needed);
     document.getElementById("blogProgressLabel").textContent = progress + " / " + needed + "회";
@@ -485,6 +487,7 @@ function blogPost() {
         toast("🏆 파워블로거 달성!!!");
         spawnConfetti();
         const banner = document.getElementById("powerBloggerBanner");
+        banner.style.display = "";
         banner.classList.remove("show"); void banner.offsetWidth; banner.classList.add("show");
       } else {
         addLog("📈 블로그 Lv" + state.blogLv + " 달성! 자동수입 +₩5/5초 증가!", true);
@@ -516,7 +519,6 @@ function playHospAnim(success) {
   const status = document.getElementById("hospStatus");
   const resultWrap = document.getElementById("hospResultWrap");
   const distract = document.getElementById("hospDistract");
-  const dogEmoji = document.getElementById("hospDogEmoji");
 
   // 강아지 이미지 설정
   dog.innerHTML = customDogImg
@@ -699,6 +701,8 @@ setInterval(() => {
   if (!state.upgOwned[2] || !state.upgOn[2]) return;
   const earned = blogClickIncome();
   state.money += earned;
+  // [버그수정 2] AI 자동 글쓰기 인터벌에서 runAutoUpgrades() 누락 수정
+  runAutoUpgrades();
   if (!isPowerBlogger()) {
     state.blogPosts++;
     const needed = blogPostsNeeded(state.blogLv);
@@ -712,6 +716,7 @@ setInterval(() => {
         toast("🏆 파워블로거 달성!!!");
         spawnConfetti();
         const banner = document.getElementById("powerBloggerBanner");
+        banner.style.display = "";
         banner.classList.remove("show"); void banner.offsetWidth; banner.classList.add("show");
       } else {
         addLog("📈 블로그 Lv" + state.blogLv + " 달성! 자동수입 +₩5/5초 증가!", true);
