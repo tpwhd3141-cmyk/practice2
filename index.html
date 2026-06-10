@@ -85,6 +85,7 @@ button, label { touch-action: manipulation; }
   font-size: 12px;
   color: #633806;
   margin-bottom: 10px;
+  visibility: hidden;
 }
 
 .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
@@ -342,7 +343,7 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
     <div class="bar-label"><span>💗 애정도</span><span id="lovePct">0%</span></div>
     <div class="bar-track"><div class="bar-fill love-fill" id="loveBar" style="width:0%"></div></div>
   </div>
-  <div class="love-warning" id="loveWarning" style="display:none">
+  <div class="love-warning" id="loveWarning">
     ⚠️ 애정도가 너무 낮아요! 밥을 주거나 산책을 시켜서 애정도를 올려주세요 🐾
   </div>
 
@@ -597,7 +598,7 @@ function render() {
   if (!customDogImg) document.getElementById("dogEmoji").textContent = getEmoji();
   document.getElementById("hospBtn").disabled = hosp < 10;
   const warn = document.getElementById("loveWarning");
-  warn.style.display = love <= 10 ? "block" : "none";
+  warn.style.visibility = love <= 10 ? "visible" : "hidden";
   renderUpgrades();
   document.getElementById("earnAmt").textContent = 10 * multiplier();
   document.getElementById("blogClickAmt").textContent = blogClickIncome();
