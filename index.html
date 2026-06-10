@@ -446,6 +446,22 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
     </div>
   </div>
 
+  <div class="upgrade-card locked" id="upg3">
+    <div class="upgrade-icon">💰</div>
+    <div class="upgrade-info">
+      <div class="upgrade-name">자동 사료값 벌기</div>
+      <div class="upgrade-desc">1초마다 자동으로 사료값 벌기</div>
+      <div class="upgrade-cost" id="upg3cost">포인트 10개 필요</div>
+    </div>
+    <div class="upgrade-right">
+      <button class="buy-btn" id="upg3btn" onclick="buyUpgrade(3)" disabled>구매</button>
+      <div class="toggle-wrap" id="upg3toggle" style="display:none">
+        <span class="toggle-label" id="upg3lbl">OFF</span>
+        <label class="toggle"><input type="checkbox" id="upg3chk" onchange="toggleUpgrade(3)"><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+  </div>
+
   <div class="section-title">기록</div>
   <div class="visit-stat">
     <div class="visit-icon">🏥</div>
@@ -497,8 +513,8 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
 const SAVE_KEY = "ongsim_v10";
 const BLOG_MAX_LV = 8;
 const AUTO_INTERVAL = 5000;
-const UPGRADE_COSTS = [3, 5, 7];
-const defaultState = { money: 0, love: 0, rebirth: 0, visits: 0, blogLv: 1, blogPosts: 0, rebirthPts: 0, upgOwned: [false, false, false], upgOn: [false, false, false] };
+const UPGRADE_COSTS = [3, 5, 7, 10];
+const defaultState = { money: 0, love: 0, rebirth: 0, visits: 0, blogLv: 1, blogPosts: 0, rebirthPts: 0, upgOwned: [false, false, false, false], upgOn: [false, false, false, false] };
 let state = Object.assign({}, defaultState);
 
 function saveGame() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {} }
@@ -508,8 +524,8 @@ function loadGame() {
     if (saved) {
       const parsed = JSON.parse(saved);
       state = Object.assign({}, defaultState, parsed);
-      state.upgOwned = Array.isArray(parsed.upgOwned) ? parsed.upgOwned : [false, false, false];
-      state.upgOn    = Array.isArray(parsed.upgOn)    ? parsed.upgOn    : [false, false, false];
+      state.upgOwned = Array.isArray(parsed.upgOwned) ? parsed.upgOwned : [false, false, false, false];
+      state.upgOn    = Array.isArray(parsed.upgOn)    ? parsed.upgOn    : [false, false, false, false];
     }
   } catch(e) {}
 }
@@ -798,7 +814,7 @@ function spawnConfetti() {
 
 function renderUpgrades() {
   document.getElementById("rebirthPts").textContent = state.rebirthPts;
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 4; i++) {
     const card = document.getElementById("upg" + i);
     const btn  = document.getElementById("upg" + i + "btn");
     const tog  = document.getElementById("upg" + i + "toggle");
@@ -831,7 +847,7 @@ function buyUpgrade(i) {
   state.rebirthPts -= UPGRADE_COSTS[i];
   state.upgOwned[i] = true;
   state.upgOn[i] = true;
-  const names = ["자동 사료 배급기", "AI 로봇 산책 서비스", "AI 블로그 자동 글쓰기"];
+  const names = ["자동 사료 배급기", "AI 로봇 산책 서비스", "AI 블로그 자동 글쓰기", "자동 사료값 벌기"];
   addLog("🛒 " + names[i] + " 구매 완료!", true);
   toast("✅ " + names[i] + " 활성화!");
   renderUpgrades(); saveGame();
@@ -904,6 +920,15 @@ setInterval(() => {
 }, 1000);
 
 setInterval(() => { state.love = Math.max(0, state.love - 0.8); render(); saveGame(); }, 3000);
+
+// 자동 사료값 벌기 — 1초마다
+setInterval(() => {
+  if (!state.upgOwned[3] || !state.upgOn[3]) return;
+  const earned = 10 * multiplier();
+  state.money += earned;
+  runAutoUpgrades();
+  render(); saveGame();
+}, 1000);
 
 loadGame();
 try {
