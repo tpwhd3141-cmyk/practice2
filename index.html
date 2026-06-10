@@ -383,7 +383,7 @@ input:checked + .toggle-slider:before { transform: translateX(16px); }
   <div class="btn-grid">
     <button class="act-btn earn" onclick="work()">
       <span class="btn-icon">💼</span>사료값 벌기
-      <div class="btn-cost">클릭당 +₩<span id="earnAmt">30</span></div>
+      <div class="btn-cost">클릭당 +₩<span id="earnAmt">10</span></div>
     </button>
     <button class="act-btn blog-btn" onclick="blogPost()">
       <span class="btn-icon">✍️</span>글 올리기
@@ -714,6 +714,8 @@ function blogPost() {
 let hospAnimResult = null;
 
 function goHospital() {
+  if (hospAnimResult) return;
+  document.getElementById("hospBtn").disabled = true;
   const chance = hospChance();
   const success = Math.random() * 100 < chance;
   hospAnimResult = { success, chance };
@@ -884,11 +886,13 @@ function toggleUpgrade(i) {
 
 // ── 돈 획득 시 자동 업그레이드 실행 ──────────────
 function runAutoUpgrades() {
-  if (state.upgOwned[0] && state.upgOn[0]) { // 자동 사료
-    if (state.money >= 50) { state.money -= 50; state.love = Math.min(100, state.love + 1); }
-  }
-  if (state.upgOwned[1] && state.upgOn[1]) { // AI 산책
-    if (state.money >= 80) { state.money -= 80; state.love = Math.min(100, state.love + 2); }
+  let cost = 0;
+  let loveGain = 0;
+  if (state.upgOwned[0] && state.upgOn[0]) { cost += 50; loveGain += 1; }
+  if (state.upgOwned[1] && state.upgOn[1]) { cost += 80; loveGain += 2; }
+  if (cost > 0 && state.money >= cost) {
+    state.money -= cost;
+    state.love = Math.min(100, state.love + loveGain);
   }
 }
 setInterval(() => {
